@@ -14,12 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # =============================================================================
-import tkinter as tk                # python 3
-from tkinter import font  as tkfont # python 3
+import tkinter as tk
+from tkinter import font as tkfont
+from GUI import *
 
-from BasicPlayer import BasicPlayer
-from GroverPlayer import GroverPlayer
-from SVMPlayer import SVMPlayer
 
 class NoughtsAndCrossesApp(tk.Tk):
     # start code from https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
@@ -38,14 +36,14 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         # container contains the diff options
         # TODO make this dynamic
-        player_container = tk.Frame(self, width=1100, height=600, bg='blue')
+        player_container = tk.Frame(self, width=1100, height=600)#, bg='blue')
         player_container.grid(row=1, column=1)
         player_container.grid_propagate(False)
 
         self.frames = {}
         for F in (BasicPlayer, GroverPlayer, SVMPlayer):
             page_name = F.__name__
-            frame = F(parent=player_container, controller=self)
+            frame = F(parent=player_container, controller=self, width=1100, height=600,)
             self.frames[page_name] = frame
 
             # put all of the pages in the same location;

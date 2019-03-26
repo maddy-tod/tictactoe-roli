@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2019 IBM.
+# Copyright 2018 IBM.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,17 +15,6 @@
 # limitations under the License.
 # =============================================================================
 import logging
-import tkinter as tk
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
-class GroverPlayer(tk.Frame):
-
-    def __init__(self, parent, controller, **args):
-        tk.Frame.__init__(self, parent, **args)
-        self.controller = controller
-        label = tk.Label(self, text="Grover ", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-        self.configure(bg="red")

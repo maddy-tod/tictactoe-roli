@@ -15,27 +15,12 @@
 # limitations under the License.
 # =============================================================================
 import logging
-import tkinter as tk
+from GUI.MainGUI import NoughtsAndCrossesApp
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class BasicPlayer(tk.Frame):
-
-    def __init__(self, parent, controller, **args):
-        tk.Frame.__init__(self, parent, **args)
-        self.controller = controller
-        label = tk.Label(self, text="Basic Player", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-
-        self.canvas = tk.Canvas(self, width=1100, heigh=600)
-
-        x_offset = 300
-
-        self.canvas.create_line(170 + x_offset, 0, 170 + x_offset, 510, fill='blue', width=8)
-        self.canvas.create_line(340 + x_offset, 0, 340 + x_offset, 510, fill='blue', width=8)
-
-        self.canvas.create_line(0 + x_offset, 170, 510 + x_offset, 170, fill='blue', width=8)
-        self.canvas.create_line(0 + x_offset, 340, 510 + x_offset, 340, fill='blue', width=8)
-        self.canvas.pack()
+if __name__ == "__main__":
+    app = NoughtsAndCrossesApp()
+    app.mainloop()
