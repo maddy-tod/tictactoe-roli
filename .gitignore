@@ -2,3 +2,5 @@
 */__pycache__/
 GUI/__pycache__/
 .idea/
+.DS_Store
+GUI/__pycache__/BasicPlayer.cpython-36.pyc
