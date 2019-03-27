@@ -16,12 +16,13 @@
 # =============================================================================
 import logging
 import tkinter as tk
+from .BasePlayer import BasePlayer
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class SVMPlayer(tk.Frame):
+class SVMPlayer(BasePlayer):
 
     def __init__(self, parent, controller, **args):
         tk.Frame.__init__(self, parent, **args)

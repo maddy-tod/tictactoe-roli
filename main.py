@@ -24,3 +24,4 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 if __name__ == "__main__":
     app = NoughtsAndCrossesApp()
     app.mainloop()
+

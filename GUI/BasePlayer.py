@@ -16,16 +16,15 @@
 # =============================================================================
 import logging
 import tkinter as tk
-from .BasePlayer import BasePlayer
+
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class GroverPlayer(BasePlayer):
+class BasePlayer(tk.Frame):
 
-    def __init__(self, parent, controller, **args):
-        tk.Frame.__init__(self, parent, **args)
-        self.controller = controller
-        label = tk.Label(self, text="Grover ", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-        self.configure(bg="red")
+    def draw_x(self, x, y):
+        pass
+
+    def draw_o(self, x, y):
+        pass

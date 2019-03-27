@@ -41,6 +41,7 @@ class NoughtsAndCrossesApp(tk.Tk):
         player_container.grid_propagate(False)
 
         self.frames = {}
+        self.current_frame = None
         for F in (BasicPlayer, GroverPlayer, SVMPlayer):
             page_name = F.__name__
             frame = F(parent=player_container, controller=self, width=1100, height=600,)
@@ -69,10 +70,28 @@ class NoughtsAndCrossesApp(tk.Tk):
                                height=2, width=20)
         svm_button.grid(row=0, column=2, padx=10)
 
+        self.draw_x(0, 0)
+        self.draw_o(1, 0)
+        self.draw_x(2, 0)
+        self.draw_o(0, 1)
+        self.draw_x(1, 1)
+        self.draw_o(2, 1)
+        self.draw_x(0, 2)
+        self.draw_o(1, 2)
+        self.draw_x(2, 2)
+
+
     def show_frame(self, page_name):
         """Show a frame for the given page name"""
         frame = self.frames[page_name]
         frame.tkraise()
+        self.current_frame = frame
+
+    def draw_x(self, x, y):
+        self.current_frame.draw_x(x, y)
+
+    def draw_o(self, x, y):
+        self.current_frame.draw_o(x, y)
 
 
 if __name__ == "__main__":

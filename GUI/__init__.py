@@ -18,5 +18,6 @@ import logging
 from .BasicPlayer import BasicPlayer
 from .GroverPlayer import GroverPlayer
 from .SVMPlayer import SVMPlayer
+from .BasePlayer import BasePlayer
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
