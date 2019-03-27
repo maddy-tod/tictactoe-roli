@@ -23,8 +23,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 class BasePlayer(tk.Frame):
 
-    def draw_x(self, x, y):
+    def draw_x(self, index):
         pass
 
-    def draw_o(self, x, y):
+    def draw_o(self, index):
         pass

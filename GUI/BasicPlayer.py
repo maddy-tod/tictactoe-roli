@@ -97,15 +97,18 @@ class BasicPlayer(BasePlayer):
             x = plot_bloch_vector([0, 0, 1])
             x.savefig('/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/starting/' + loc + '.png')
 
-    def draw_x(self, x, y):
-        self._draw_move(self.cross, x, y)
+    def draw_x(self, index):
+        self._draw_move(self.cross, index)
 
-    def draw_o(self, x, y):
-        self._draw_move(self.nought, x, y)
+    def draw_o(self, index):
+        self._draw_move(self.nought, index)
 
-    def _draw_move(self, play, x, y):
+    def _draw_move(self, play, index):
         # need to store a ref to the image otherwise they get lost
         self.plays.append(play)
+
+        x = index % 3
+        y = int(index / 3)
         self.canvas.create_image(((self.x_offset + x*self.space_size), self.space_size*y), image=play, anchor=tk.NW, tag='ml')
 
         # TODO fade out the Bloch sphere in the given location

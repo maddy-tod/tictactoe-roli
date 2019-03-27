@@ -16,6 +16,7 @@
 # =============================================================================
 import logging
 from GUI.MainGUI import NoughtsAndCrossesApp
+from RoliHandler import RoliBlockHandler
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -23,5 +24,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 if __name__ == "__main__":
     app = NoughtsAndCrossesApp()
+
+    roli = RoliBlockHandler(app)
+
+    roli.run()
     app.mainloop()
 
