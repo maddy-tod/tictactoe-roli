@@ -11,6 +11,12 @@ bool playerTurn;
 int player;
 int computer;
 
+
+int win_animate_time;
+bool animate_one;
+
+int winner;
+
 void initialise()
 {
     tl = 0;
@@ -26,28 +32,26 @@ void initialise()
     playerTurn = true;
     player = 1;
     computer = 2;
+    
+    winner = 0;
+    win_animate_time = 0;
+    animate_one = true;
 }
 
 void repaint()
 {
     clearDisplay();
     
-    drawGrid();
-    drawSigns();
-}
-
-void drawWinner(int winner)
-{
-    if (winner == 1)
-    {
-        int xColour = makeARGB (255, 0, 255, 0);
-        fillRect (xColour, 0, 0, 15, 15);        
+    if (winner == computer){
+        ibmq();
+    } 
+    else if (winner == player){
+        face();
     }
-    else if (winner == 2)
-    {
-        int oColour = makeARGB (255, 0, 0, 255);
-        fillRect (oColour, 0, 0, 15, 15);        
-    }
+    else {
+        drawGrid();
+        drawSigns();
+    }  
 }
 
 void drawGrid()
@@ -172,15 +176,114 @@ void handleMIDI (int byte0, int byte1, int byte2)
     
     // move by the quantum computer
     if (byte0 == 0xa0) {
-        int index = getIndex (byte1, byte2);
-        setValueForIndex (index, computer);
+        setValueForIndex (byte1, computer);
         playerTurn = true;
+        face();
     }
     
     // someone has won
     if (byte0 == 0xb0){
-        drawWinner (byte1);
+        winner = byte1;
     }
+}
+
+void ibmq()
+{
+    int colour = 0;
+    if (animate_one){
+        colour = makeARGB (255, 255, 0, 255); 
+    } else {
+        colour = makeARGB (255, 0, 0, 255);
+    }
+    if (win_animate_time == 5) {
+        animate_one = !animate_one;
+        win_animate_time = 0;
+    }
+    win_animate_time = win_animate_time +1;
+    
+    int x = 4;
+    int y = 1;
+    
+    fillRect (colour, x + 2, y,      3,  1);
+    fillRect (colour, x + 1, y + 1,  5,  1);
+    
+    fillRect (colour, x + 0, y + 2,  2, 1);
+    fillRect (colour, x + 5, y + 2,  2, 1);
+    
+    fillRect (colour, x + 0, y + 3,  2, 1);
+    fillRect (colour, x + 5, y + 3,  2, 1);
+    
+    fillRect (colour, x + 0, y + 4,  2, 1);
+    fillRect (colour, x + 5, y + 4,  2, 1);
+    
+    fillRect (colour, x + 0, y + 5,  2, 1);
+    fillRect (colour, x + 5, y + 5,  2, 1);
+    
+    fillRect (colour, x + 0, y + 6,  2, 1);
+    fillRect (colour, x + 5, y + 6,  2, 1);
+    
+    fillRect (colour, x + 0, y + 7,  2, 1);
+    fillRect (colour, x + 5, y + 7,  2, 1);
+    
+    fillRect (colour, x + 0, y + 8,  2, 1);
+    fillRect (colour, x + 5, y + 8,  2, 1);
+    
+    fillRect (colour, x + 1, y + 9,  5, 1);
+    fillRect (colour, x + 2, y + 10, 3, 1);
+    fillRect (colour, x + 3, y + 11, 3, 1);
+    fillRect (colour, x + 3, y + 12, 3, 1);
+}
+
+
+void face()
+{
+    int colour = makeARGB (255, 255, 0, 255); 
+    
+    if (win_animate_time == 5) {
+        animate_one = !animate_one;
+        win_animate_time = 0;
+    }
+    win_animate_time = win_animate_time +1;
+    
+    int x = 4;
+    int y = 1;
+    
+    fillRect (colour, x + 2, y,      3,  1);
+    fillRect (colour, x + 1, y + 1,      5,  1);
+    fillRect (colour, x + 1, y + 2,      5,  1);
+    fillRect (colour, x + 1, y + 3,      5,  1);
+    fillRect (colour, x + 2, y + 4,      3,  1);
+    
+    // make him dance!
+    fillRect (colour, x + 3, y + 5,      1,  1);
+    if (animate_one) {
+        fillRect (colour, x + 6, y + 5,      1,  1);
+    } else {
+        fillRect (colour, x + 0, y + 5,      1,  1);
+    }
+    
+    fillRect (colour, x + 0, y + 6,      7,  1);
+    
+    fillRect (colour, x + 3, y + 7,      1,  1);
+    if (animate_one){
+        fillRect (colour, x + 0, y + 7,      1,  1);
+    } else {
+        fillRect (colour, x + 6, y + 7,      1,  1);
+    }
+    
+    
+    fillRect (colour, x + 3, y + 8,      1,  1);
+    fillRect (colour, x + 2, y + 9,      3,  1);
+    
+    fillRect (colour, x + 1, y + 10,      2,  1);
+    fillRect (colour, x + 4, y + 10,      2,  1);
+    
+    fillRect (colour, x + 1, y + 11,      1,  1);
+    fillRect (colour, x + 5, y + 11,      1,  1);
+    
+    fillRect (colour, x + 0, y + 12,      2,  1);
+    fillRect (colour, x + 5, y + 12,      2,  1);
+    
 }
 
 
