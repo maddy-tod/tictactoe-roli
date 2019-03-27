@@ -68,7 +68,7 @@ class MainHandler:
         if self.board[0] and (self.board[0] == self.board[4] == self.board[8]):
             self.winner = self.board[0]
         elif self.board[2] and (self.board[2] == self.board[4] == self.board[6]):
-            self.winner = self.board[0]
+            self.winner = self.board[2]
 
         if self.winner > 0:
             self.draw_winner()
@@ -76,6 +76,14 @@ class MainHandler:
     def draw_winner(self):
         print("yas you won!")
         self.roli.send_winner(self.winner)
+
+    def reset(self):
+        self.board = [None] * 9
+        self.qcomputer = QuantumPlayer()
+
+        self.winner = -1
+
+        self.gui.reset()
 
 
 if __name__ == "__main__":

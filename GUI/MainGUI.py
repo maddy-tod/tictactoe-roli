@@ -87,6 +87,9 @@ class NoughtsAndCrossesApp(tk.Tk):
     def computers_turn(self):
         self.qcomputer.take_turn()
 
+    def reset(self):
+        self.current_frame.reset()
+
 
 if __name__ == "__main__":
     app = NoughtsAndCrossesApp()

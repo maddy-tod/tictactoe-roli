@@ -72,6 +72,7 @@ class BasicPlayer(BasePlayer):
 
         # stored the noughts and crosses images that have been played
         self.plays = []
+        self.plays_imgs = []
         self.nought = self.load_other_image('GUI/imgs/players/o.png')
         self.cross = self.load_other_image('GUI/imgs/players/x.png')
 
@@ -109,8 +110,31 @@ class BasicPlayer(BasePlayer):
 
         x = index % 3
         y = int(index / 3)
-        self.canvas.create_image(((self.x_offset + x*self.space_size), self.space_size*y), image=play, anchor=tk.NW, tag='ml')
+        img = self.canvas.create_image(((self.x_offset + x*self.space_size), self.space_size*y), image=play, anchor=tk.NW)
 
+        self.plays_imgs.append(img)
         # TODO fade out the Bloch sphere in the given location
         # could just load a new faded image
         # self.current_frame.canvas.itemconfig(self.current_frame.bloch_tl, image = self.current_frame.nought)
+
+    def reset(self):
+        self.plays = []
+
+        # reset the Bloch sphere pictures
+        self.canvas.itemconfig(self.bloch_tl, image=self.starting_img)
+        self.canvas.itemconfig(self.bloch_tm, image=self.starting_img)
+        self.canvas.itemconfig(self.bloch_tr, image=self.starting_img)
+
+        self.canvas.itemconfig(self.bloch_ml, image=self.starting_img)
+        self.canvas.itemconfig(self.bloch_mm, image=self.starting_img)
+        self.canvas.itemconfig(self.bloch_mr, image=self.starting_img)
+
+        self.canvas.itemconfig(self.bloch_bl, image=self.starting_img)
+        self.canvas.itemconfig(self.bloch_bm, image=self.starting_img)
+        self.canvas.itemconfig(self.bloch_br, image=self.starting_img)
+
+        for img in self.plays_imgs:
+            self.canvas.delete(img)
+
+
+

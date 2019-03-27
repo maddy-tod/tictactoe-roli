@@ -289,5 +289,6 @@ void face()
 
 void handleButtonDown (int index)
 {
+    sendMIDI (0xcc);
     initialise();
 }
