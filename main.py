@@ -30,20 +30,52 @@ class MainHandler:
         self.board = [None]*9
         self.qcomputer = QuantumPlayer()
 
-    #TODO these methods need to check if winner
+        self.winner = -1
+
     def draw_x(self, index):
         self.gui.draw_x(index)
         self.board[index] = 1
 
+        self._check_for_winner()
+
     def draw_o(self, index):
         self.gui.draw_o(index)
         self.board[index] = 2
+
+        self._check_for_winner()
 
     def computers_turn(self):
         move = self.qcomputer.take_turn(self.board)
         print("computer is taking turn")
         self.draw_o(move)
         self.roli.send_move(move)
+
+    def _check_for_winner(self):
+
+        # check rows
+        for indx in [0, 3, 6]:
+            if self.board[indx] and (self.board[indx] == self.board[indx+1] == self.board[indx+2]) :
+                self.winner = self.board[indx]
+                break
+
+        # check columns
+        for indx in [0, 1, 2]:
+            if self.board[indx] and (self.board[indx] == self.board[indx + 3] == self.board[indx + 6]):
+                self.winner = self.board[indx]
+                break
+
+        # check diagonals
+        if self.board[0] and (self.board[0] == self.board[4] == self.board[8]):
+            self.winner = self.board[0]
+        elif self.board[2] and (self.board[2] == self.board[4] == self.board[6]):
+            self.winner = self.board[0]
+
+        if self.winner > 0:
+            self.draw_winner()
+
+    def draw_winner(self):
+        print("yas you won!")
+        self.roli.send_winner(self.winner)
 
 
 if __name__ == "__main__":

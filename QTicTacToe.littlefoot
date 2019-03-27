@@ -134,7 +134,7 @@ void touchStart (int index, float x, float y, float z, float vz)
     int yPos = int (y * 7);
     
     int index = getIndex (xPos, yPos);
-    if (playerTurn) {
+    if (playerTurn && winner == 0) {
         setValueForIndex (index, player);
         playerTurn = false;
         sendMIDI (0xa0, index);
@@ -178,7 +178,6 @@ void handleMIDI (int byte0, int byte1, int byte2)
     if (byte0 == 0xa0) {
         setValueForIndex (byte1, computer);
         playerTurn = true;
-        face();
     }
     
     // someone has won
