@@ -18,3 +18,23 @@ import logging
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
+class QuantumPlayer:
+    def __init__(self):
+        print("made a q player")
+
+    def take_turn(self, board):
+        """
+        Args:
+            board [int] : the current state of the board
+        Returns:
+            int : the index of the move to be made
+        """
+
+        i = 0
+        while board[i]:
+            i+=1
+
+        # make the next avaliable move
+        return i

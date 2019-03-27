@@ -60,8 +60,15 @@ class RoliBlockHandler:
                 if data[0] == 0xa0:
                     # data[1] contains the index 0-9
                     self.controller.draw_x(data[1])
+                    self.controller.computers_turn()
 
-        self.controller.after(100, self.run)
+        self.controller.gui.after(100, self.run)
+
+    def send_move(self, move):
+        self.midi_output.write([[[0xa0, move, 0], 0]])
+
+    def send_winner(self, winner):
+        self.midi_output.write([[[0xb0, winner, 0], 0]])
 
 
 

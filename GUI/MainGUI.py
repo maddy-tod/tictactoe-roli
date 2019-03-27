@@ -22,8 +22,10 @@ from GUI import *
 class NoughtsAndCrossesApp(tk.Tk):
     # start code from https://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, controller, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
+        self.controller = controller
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
@@ -81,6 +83,9 @@ class NoughtsAndCrossesApp(tk.Tk):
 
     def draw_o(self, index):
         self.current_frame.draw_o(index)
+
+    def computers_turn(self):
+        self.qcomputer.take_turn()
 
 
 if __name__ == "__main__":
