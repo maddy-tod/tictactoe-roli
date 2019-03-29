@@ -36,19 +36,23 @@ class MainHandler:
         self.gui.draw_x(index)
         self.board[index] = 1
 
-        self._check_for_winner()
-
     def draw_o(self, index):
         self.gui.draw_o(index)
         self.board[index] = 2
 
+    def computers_turn(self):
+        # check to see if the player has won
         self._check_for_winner()
 
-    def computers_turn(self):
-        move = self.qcomputer.take_turn(self.board)
-        print("computer is taking turn")
-        self.draw_o(move)
-        self.roli.send_move(move)
+        # no one has won and there are still spaces left
+        if self.winner == -1 and any([x is None for x in self.board]):
+            move = self.qcomputer.take_turn(self.board)
+            print("computer is taking turn")
+            self.draw_o(move)
+            self.roli.send_move(move)
+
+            # check to see if the computer has won
+            self._check_for_winner()
 
     def _check_for_winner(self):
 
@@ -74,7 +78,6 @@ class MainHandler:
             self.draw_winner()
 
     def draw_winner(self):
-        print("yas you won!")
         self.roli.send_winner(self.winner)
 
     def reset(self):

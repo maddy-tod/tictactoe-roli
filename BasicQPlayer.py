@@ -54,55 +54,67 @@ class BasicQPlayer:
 
                 # so it is the start of a row
                 if index % 3 == 0:
-                    if board[index + 1]:
+
+                    # two pieces in a row - need to block/win
+                    if board[index + 1] and board[index + 2] and board[index + 1] == board[index + 2] :
                         qc.t(q[index])
-                        t_count += 1
-                    if board[index + 2]:
+                        qc.t(q[index])
+                        t_count += 2
+                    # one of the spaces is empty so go there
+                    elif board[index + 1] != board[index + 2]:
                         qc.t(q[index])
                         t_count += 1
 
                 # so it is the middle of a row
                 if index % 3 == 1:
-                    if board[index - 1]:
+
+                    # two pieces in a row - need to block/win
+                    if board[index + 1] and board[index - 1] and board[index + 1] == board[index - 1] :
                         qc.t(q[index])
-                        t_count += 1
-                    if board[index + 1]:
+                        qc.t(q[index])
+                        t_count += 2
+                    elif board[index + 1] != board[index - 1]:
                         qc.t(q[index])
                         t_count += 1
 
                 # so it is the end of a row
                 if index % 3 == 2:
-                    if board[index - 1]:
+                    # two pieces in a row - need to block/win
+                    if board[index - 1] and board[index - 2] and board[index - 1] == board[index - 2]:
                         qc.t(q[index])
-                        t_count += 1
-                    if board[index - 2]:
+                        qc.t(q[index])
+                        t_count += 2
+                    elif board[index - 1] != board[index - 2]:
                         qc.t(q[index])
                         t_count += 1
 
                 # so is the top row
                 if index / 3 < 1:
-                    if board[index + 3]:
+                    if board[index + 3] and board[index - 6] and board[index - 3] == board[index - 3]:
                         qc.t(q[index])
-                        t_count += 1
-                    if board[index + 3]:
+                        qc.t(q[index])
+                        t_count += 2
+                    elif board[index + 3] != board[index - 6]:
                         qc.t(q[index])
                         t_count += 1
 
                 # so it is the middle row
                 if 2 > index / 3 >= 1:
-                    if board[index - 1]:
+                    if board[index - 3] and board[index + 3] and board[index - 3] == board[index + 3]:
                         qc.t(q[index])
-                        t_count += 1
-                    if board[index + 1]:
+                        qc.t(q[index])
+                        t_count += 2
+                    elif board[index - 3] != board[index + 3]:
                         qc.t(q[index])
                         t_count += 1
 
                 # so it is the top row
                 if index / 3 >= 2:
-                    if board[index - 1]:
+                    if board[index - 3] and board[index - 6] and board[index - 3] == board[index - 6]:
                         qc.t(q[index])
-                        t_count += 1
-                    if board[index - 2]:
+                        qc.t(q[index])
+                        t_count += 2
+                    elif board[index - 3] != board[index - 6]:
                         qc.t(q[index])
                         t_count += 1
 
@@ -110,29 +122,35 @@ class BasicQPlayer:
 
         # hard code in the diagonals
         if board[0] and board[0] == board[4]:
-            qc.t(q[0])
-            qc.t(q[4])
-            print('extra t gate for 0 and 4')
+            qc.t(q[8])
+            qc.t(q[8])
+            qc.t(q[8])
+            print('extra t gate for 8')
         if board[0] and board[0] == board[8]:
-            qc.t(q[0])
-            qc.t(q[8])
-            print('extra t gate for 0 and 8')
+            qc.t(q[4])
+            qc.t(q[4])
+            qc.t(q[4])
+            print('extra t gate for 4')
         if board[4] and board[4] == board[8]:
-            qc.t(q[4])
-            qc.t(q[8])
-            print('extra t gate for 4 and 8')
+            qc.t(q[0])
+            qc.t(q[0])
+            qc.t(q[0])
+            print('extra t gate for 0')
         if board[2] and board[2] == board[4]:
-            qc.t(q[2])
-            qc.t(q[4])
-            print('extra t gate for 2 and 4')
+            qc.t(q[6])
+            qc.t(q[6])
+            qc.t(q[6])
+            print('extra t gate for 6')
         if board[2] and board[2] == board[6]:
-            qc.t(q[2])
-            qc.t(q[6])
-            print('extra t gate for 2 and 6')
-        if board[4] and board[4] == board[6]:
             qc.t(q[4])
-            qc.t(q[6])
-            print('extra t gate for 4 and 6')
+            qc.t(q[4])
+            qc.t(q[4])
+            print('extra t gate for 4')
+        if board[4] and board[4] == board[6]:
+            qc.t(q[2])
+            qc.t(q[2])
+            qc.t(q[2])
+            print('extra t gate for 2')
 
         for index, move in enumerate(board):
             if not move:
@@ -140,7 +158,6 @@ class BasicQPlayer:
         qc.measure(q, c)
 
         backend = Aer.get_backend('qasm_simulator')
-        print(qc)
         shots = 100
         job_sim = execute(qc, backend, shots=shots)
         sim_result = job_sim.result().get_counts(qc)
