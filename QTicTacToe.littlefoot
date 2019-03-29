@@ -135,9 +135,10 @@ void touchStart (int index, float x, float y, float z, float vz)
     
     int index = getIndex (xPos, yPos);
     if (playerTurn && winner == 0) {
-        setValueForIndex (index, player);
-        playerTurn = false;
-        sendMIDI (0xa0, index);
+        if (setValueForIndex (index, player)) {
+            playerTurn = false;
+            sendMIDI (0xa0, index);
+        }
     }
 }
 
@@ -151,15 +152,69 @@ int getIndex (int x, int y)
 
 bool setValueForIndex (int index, int value)
 {   
-    if (index == 0) { tl = tl == 0 ? value : tl; return true; }
-    if (index == 1) { t  = t  == 0 ? value : t ; return true; }
-    if (index == 2) { tr = tr == 0 ? value : tr; return true; }
-    if (index == 3) { ml = ml == 0 ? value : ml; return true; }
-    if (index == 4) { m  = m  == 0 ? value : m ; return true; }
-    if (index == 5) { mr = mr == 0 ? value : mr; return true; }
-    if (index == 6) { bl = bl == 0 ? value : bl; return true; }
-    if (index == 7) { b  = b  == 0 ? value : b ; return true; }
-    if (index == 8) { br = br == 0 ? value : br; return true; }
+    if (index == 0) { 
+        if (tl == 0) {
+            tl = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 1) { 
+        if (t == 0) {
+            t = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 2) { 
+        if (tr == 0) {
+            tr = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 3) { 
+        if (ml == 0) {
+            ml = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 4) { 
+        if (m == 0) {
+            m = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 5) { 
+        if (mr == 0) {
+            mr = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 6) { 
+        if (bl == 0) {
+            bl = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 7) { 
+        if (b == 0) {
+            b = value;
+            return true;
+        }
+        return false;
+    }
+    if (index == 8) { 
+        if (br == 0) {
+            br = value;
+            return true;
+        }
+        return false;
+    }
     
     return false;
 }
