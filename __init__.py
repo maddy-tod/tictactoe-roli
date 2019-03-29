@@ -15,4 +15,4 @@
 # limitations under the License.
 # =============================================================================
 from RoliHandler import RoliBlockHandler
-from .qcomputer import QuantumPlayer
+from .BasicQPlayer import BasicQPlayer

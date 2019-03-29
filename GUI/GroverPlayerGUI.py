@@ -16,12 +16,12 @@
 # =============================================================================
 import logging
 import tkinter as tk
-from .BasePlayer import BasePlayer
+from .BasePlayerGUI import BasePlayerGUI
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class GroverPlayer(BasePlayer):
+class GroverPlayerGUI(BasePlayerGUI):
 
     def __init__(self, parent, controller, **args):
         tk.Frame.__init__(self, parent, **args)

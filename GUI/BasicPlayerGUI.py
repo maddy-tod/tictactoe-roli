@@ -20,13 +20,13 @@ from qiskit.tools.visualization import plot_bloch_vector
 from PIL import Image
 from PIL import ImageTk
 
-from .BasePlayer import BasePlayer
+from .BasePlayerGUI import BasePlayerGUI
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class BasicPlayer(BasePlayer):
+class BasicPlayerGUI(BasePlayerGUI):
 
     def __init__(self, parent, controller, **args):
         tk.Frame.__init__(self, parent, **args)

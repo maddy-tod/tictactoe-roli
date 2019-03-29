@@ -44,7 +44,7 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         self.frames = {}
         self.current_frame = None
-        for F in (BasicPlayer, GroverPlayer, SVMPlayer):
+        for F in (BasicPlayerGUI, GroverPlayerGUI, SVMPlayerGUI):
             page_name = F.__name__
             frame = F(parent=player_container, controller=self, width=1100, height=600,)
             self.frames[page_name] = frame
@@ -54,21 +54,21 @@ class NoughtsAndCrossesApp(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("BasicPlayer")
+        self.show_frame("BasicPlayerGUI")
 
         # Create the buttons for swapping between
         button_container = tk.Frame(self)
         button_container.grid(row=2, column=1, pady=10)
         basic_button = tk.Button(button_container, text="Basic Player",
-                                 command=lambda: self.show_frame("BasicPlayer"),
+                                 command=lambda: self.show_frame("BasicPlayerGUI"),
                                  height=2, width=20)
         basic_button.grid(row=0, column=0, padx=10)
         grover_button = tk.Button(button_container, text="Grover Player",
-                                  command=lambda:self.show_frame("GroverPlayer"),
+                                  command=lambda:self.show_frame("GroverPlayerGUI"),
                                   height=2, width=20)
         grover_button.grid(row=0, column=1, padx=10)
         svm_button = tk.Button(button_container, text="SVM Player",
-                               command=lambda: self.show_frame("SVMPlayer"),
+                               command=lambda: self.show_frame("SVMPlayerGUI"),
                                height=2, width=20)
         svm_button.grid(row=0, column=2, padx=10)
 

@@ -17,7 +17,7 @@
 import logging
 from GUI.MainGUI import NoughtsAndCrossesApp
 from RoliHandler import RoliBlockHandler
-from qcomputer import QuantumPlayer
+from BasicQPlayer import BasicQPlayer
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,7 +28,7 @@ class MainHandler:
         self.roli = None
         self.gui = None
         self.board = [None]*9
-        self.qcomputer = QuantumPlayer()
+        self.qcomputer = BasicQPlayer()
 
         self.winner = -1
 
@@ -79,7 +79,7 @@ class MainHandler:
 
     def reset(self):
         self.board = [None] * 9
-        self.qcomputer = QuantumPlayer()
+        self.qcomputer = BasicQPlayer()
 
         self.winner = -1
 

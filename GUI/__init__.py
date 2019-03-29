@@ -15,9 +15,9 @@
 # limitations under the License.
 # =============================================================================
 import logging
-from .BasicPlayer import BasicPlayer
-from .GroverPlayer import GroverPlayer
-from .SVMPlayer import SVMPlayer
-from .BasePlayer import BasePlayer
+from .BasicPlayerGUI import BasicPlayerGUI
+from .GroverPlayerGUI import GroverPlayerGUI
+from .SVMPlayerGUI import SVMPlayerGUI
+from .BasePlayerGUI import BasePlayerGUI
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
