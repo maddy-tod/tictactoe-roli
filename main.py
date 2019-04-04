@@ -18,6 +18,7 @@ import logging
 from GUI.MainGUI import NoughtsAndCrossesApp
 from RoliHandler import RoliBlockHandler
 from BasicQPlayer import BasicQPlayer
+from Logic.GameLogic import GameLogic
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -27,10 +28,11 @@ class MainHandler:
     def __init__(self):
         self.roli = None
         self.gui = None
-        self.board = [None]*9
+        self.board = [None] * 9
         self.qcomputer = BasicQPlayer()
-
         self.winner = -1
+
+        self.logic = GameLogic()
 
     def draw_x(self, index):
         self.gui.draw_x(index)
@@ -42,7 +44,7 @@ class MainHandler:
 
     def computers_turn(self):
         # check to see if the player has won
-        self._check_for_winner()
+        self.winner = self.logic.check_for_winner(self.board)
 
         # no one has won and there are still spaces left
         if self.winner == -1 and any([x is None for x in self.board]):
@@ -52,32 +54,14 @@ class MainHandler:
             self.roli.send_move(move)
 
             # check to see if the computer has won
-            self._check_for_winner()
+            self.winner = self.logic.check_for_winner(self.board)
+            if self.winner != -1 :
+                self.draw_result()
+        else:
+            # could be a draw or a winner
+            self.draw_result()
 
-    def _check_for_winner(self):
-
-        # check rows
-        for indx in [0, 3, 6]:
-            if self.board[indx] and (self.board[indx] == self.board[indx+1] == self.board[indx+2]) :
-                self.winner = self.board[indx]
-                break
-
-        # check columns
-        for indx in [0, 1, 2]:
-            if self.board[indx] and (self.board[indx] == self.board[indx + 3] == self.board[indx + 6]):
-                self.winner = self.board[indx]
-                break
-
-        # check diagonals
-        if self.board[0] and (self.board[0] == self.board[4] == self.board[8]):
-            self.winner = self.board[0]
-        elif self.board[2] and (self.board[2] == self.board[4] == self.board[6]):
-            self.winner = self.board[2]
-
-        if self.winner > 0:
-            self.draw_winner()
-
-    def draw_winner(self):
+    def draw_result(self):
         self.roli.send_winner(self.winner)
 
     def reset(self):

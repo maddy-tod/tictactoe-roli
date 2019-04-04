@@ -93,6 +93,9 @@ class NoughtsAndCrossesApp(tk.Tk):
     def basic_player_button_press(self, button):
         print(button)
 
+    def get_next_blochs(self):
+        self.controller.get_next_blochs()
+
 
 if __name__ == "__main__":
     app = NoughtsAndCrossesApp()

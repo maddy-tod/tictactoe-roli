@@ -30,6 +30,7 @@ class BasicPlayerGUI(BasePlayerGUI):
 
     def __init__(self, parent, controller, **args):
         tk.Frame.__init__(self, parent, **args)
+        self.window = parent
         self.controller = controller
         label = tk.Label(self, text="Basic Player", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
@@ -155,6 +156,16 @@ class BasicPlayerGUI(BasePlayerGUI):
 
         self.states_button.configure(text=text)
         self.controller.basic_player_button_press('states')
+
+        if self.showing_states:
+            self._animate_states()
+
+    def _animate_states(self):
+
+        # check you are still animating
+        if self.showing_states:
+            # get the next thing to draw from the controller
+            self.window.after(500, self._animate_states)
 
     def reset(self):
         self.plays = []
