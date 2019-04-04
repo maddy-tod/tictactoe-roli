@@ -90,6 +90,9 @@ class NoughtsAndCrossesApp(tk.Tk):
     def reset(self):
         self.current_frame.reset()
 
+    def basic_player_button_press(self, button):
+        print(button)
+
 
 if __name__ == "__main__":
     app = NoughtsAndCrossesApp()

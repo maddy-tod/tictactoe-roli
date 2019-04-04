@@ -34,13 +34,30 @@ class BasicPlayerGUI(BasePlayerGUI):
         label = tk.Label(self, text="Basic Player", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
 
-        self.canvas = tk.Canvas(self, width=1100, heigh=600)
+        self.canvas = tk.Canvas(self, width=1100, height=600)
+        self.buttons_canvas = tk.Canvas(self, width=100, height=600)
 
         self.x_offset = 300
         self.space_size = 170
 
         # if we wanted to re draw the images
         # self.gen_images()
+
+        # Add buttons for the different modes
+        self.states_button = tk.Button(self.canvas, text="Show setup states",
+                                       command=lambda: self.show_states_pressed(),
+                                       height=2, width=20)
+        self.states_button.place(x=10, y=0)
+        # We are not currently showing how the states change
+        self.showing_states = False
+        self.final_button = tk.Button(self.canvas, text="Show final states",
+                                      command=lambda: controller.basic_player_button_press('final'),
+                                      height=2, width=20)
+        self.final_button.place(x=10, y=50)
+        self.result_button = tk.Button(self.canvas, text="Result",
+                                       command=lambda: controller.basic_player_button_press('result'),
+                                       height=2, width=20)
+        self.result_button.place(x=10, y=100)
 
         # Allows for a bit of padding
         temp_x_offset = self.x_offset + 10
@@ -59,6 +76,10 @@ class BasicPlayerGUI(BasePlayerGUI):
         self.bloch_bl = self.canvas.create_image((temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='bl')
         self.bloch_bm = self.canvas.create_image((self.space_size + temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='bm')
         self.bloch_br = self.canvas.create_image((self.space_size*2 + temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='br')
+
+        self.blochs_imgs = [self.bloch_tl, self.bloch_tm, self.bloch_tr,
+                            self.bloch_ml, self.bloch_mm, self.bloch_mr,
+                            self.bloch_bl, self.bloch_bm, self.bloch_br]
 
         # Draw lines of the TicTacToe grid
         x1 = self.space_size + self.x_offset
@@ -117,21 +138,30 @@ class BasicPlayerGUI(BasePlayerGUI):
         # could just load a new faded image
         # self.current_frame.canvas.itemconfig(self.current_frame.bloch_tl, image = self.current_frame.nought)
 
+    def draw_bloch(self, bloch_index, loc_index):
+        bloch = self.load_bloch_image('/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/testing/bloch'
+                                      + str(bloch_index) + '.png')
+
+        self.canvas.itemconfig(self.blochs_imgs[loc_index], image=bloch)
+
+    def show_states_pressed(self):
+
+        self.showing_states = not self.showing_states
+
+        text = "Show setup states"
+        # Update the text
+        if self.showing_states:
+            text = "Pause"
+
+        self.states_button.configure(text=text)
+        self.controller.basic_player_button_press('states')
+
     def reset(self):
         self.plays = []
 
         # reset the Bloch sphere pictures
-        self.canvas.itemconfig(self.bloch_tl, image=self.starting_img)
-        self.canvas.itemconfig(self.bloch_tm, image=self.starting_img)
-        self.canvas.itemconfig(self.bloch_tr, image=self.starting_img)
-
-        self.canvas.itemconfig(self.bloch_ml, image=self.starting_img)
-        self.canvas.itemconfig(self.bloch_mm, image=self.starting_img)
-        self.canvas.itemconfig(self.bloch_mr, image=self.starting_img)
-
-        self.canvas.itemconfig(self.bloch_bl, image=self.starting_img)
-        self.canvas.itemconfig(self.bloch_bm, image=self.starting_img)
-        self.canvas.itemconfig(self.bloch_br, image=self.starting_img)
+        for bloch in self.blochs_imgs:
+            self.canvas.itemconfig(bloch, image=self.starting_img)
 
         for img in self.plays_imgs:
             self.canvas.delete(img)
