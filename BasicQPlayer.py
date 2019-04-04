@@ -23,6 +23,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class BasicQPlayer:
     def __init__(self):
         print("made a q player")
+        self.move = 0
+
+        self.num_t_gates = [0]*9
 
     def take_turn(self, board):
         """
@@ -36,6 +39,8 @@ class BasicQPlayer:
         # However this would mean lots of index/physical qubit number swaps
 
         num_qubits = 9
+        # reset the T gate counter
+        self.num_t_gates = [0] * num_qubits
         q = QuantumRegister(num_qubits)
         c = ClassicalRegister(num_qubits)
         qc = QuantumCircuit(q, c)
@@ -44,7 +49,7 @@ class BasicQPlayer:
         for index, move in enumerate(board):
             if move:
                 qc.x(q[index])
-                print('MY BOY X on qubit', index)
+                self.num_t_gates[index] = -1
             else :
                 # this space is a potential move
                 # so put into a superposition
@@ -119,37 +124,44 @@ class BasicQPlayer:
                         t_count += 1
 
                 print("applied ", t_count,  " t gates to ", index)
+                self.num_t_gates[index] = t_count
 
         # hard code in the diagonals
         if board[0] and board[0] == board[4]:
             qc.t(q[8])
             qc.t(q[8])
             qc.t(q[8])
+            self.num_t_gates[8] += 3
             print('extra t gate for 8')
         if board[0] and board[0] == board[8]:
             qc.t(q[4])
             qc.t(q[4])
             qc.t(q[4])
+            self.num_t_gates[4] += 3
             print('extra t gate for 4')
         if board[4] and board[4] == board[8]:
             qc.t(q[0])
             qc.t(q[0])
             qc.t(q[0])
+            self.num_t_gates[0] += 3
             print('extra t gate for 0')
         if board[2] and board[2] == board[4]:
             qc.t(q[6])
             qc.t(q[6])
             qc.t(q[6])
+            self.num_t_gates[6] += 3
             print('extra t gate for 6')
         if board[2] and board[2] == board[6]:
             qc.t(q[4])
             qc.t(q[4])
             qc.t(q[4])
+            self.num_t_gates[4] += 3
             print('extra t gate for 4')
         if board[4] and board[4] == board[6]:
             qc.t(q[2])
             qc.t(q[2])
             qc.t(q[2])
+            self.num_t_gates[2] += 3
             print('extra t gate for 2')
 
         for index, move in enumerate(board):
@@ -174,7 +186,6 @@ class BasicQPlayer:
                 if val == '1':
                     counts[index] += count
 
-
         for i, c in enumerate(counts):
             print(i, " - ", c, ' occupied? ', board[i])
 
@@ -185,5 +196,5 @@ class BasicQPlayer:
                 max_index = index
                 max_count = count
 
-        print("move : ",max_index)
-        return max_index
+        print("move : ", max_index)
+        self.move = max_index

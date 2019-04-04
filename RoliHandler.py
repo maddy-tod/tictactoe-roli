@@ -60,7 +60,7 @@ class RoliBlockHandler:
                 if data[0] == 0xa0:
                     # data[1] contains the index 0-9
                     self.controller.draw_x(data[1])
-                    self.controller.computers_turn()
+                    self.controller.computer_take_turn()
 
                 # 0xcc means the button has been pressed - start again
                 if data[0] == 0xcc:

@@ -94,7 +94,28 @@ class NoughtsAndCrossesApp(tk.Tk):
         print(button)
 
     def get_next_blochs(self):
-        self.controller.get_next_blochs()
+        print('trying to get blochs')
+        blochs = self.controller.get_next_blochs()
+
+        if blochs :
+            # draw the updated blochs
+            for bloch, qubit in blochs:
+                self.current_frame.draw_bloch(bloch, qubit)
+        else :
+            # reset the button
+            self.current_frame.show_states_pressed()
+
+    def get_final_blochs(self):
+        print('trying to get final blochs')
+        blochs = self.controller.get_final_blochs()
+
+        if blochs:
+            # draw the updated blochs
+            for bloch, qubit in blochs:
+                self.current_frame.draw_bloch(bloch, qubit)
+
+    def show_result(self):
+        self.controller.show_result()
 
 
 if __name__ == "__main__":

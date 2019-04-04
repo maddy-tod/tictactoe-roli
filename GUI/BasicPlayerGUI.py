@@ -52,11 +52,11 @@ class BasicPlayerGUI(BasePlayerGUI):
         # We are not currently showing how the states change
         self.showing_states = False
         self.final_button = tk.Button(self.canvas, text="Show final states",
-                                      command=lambda: controller.basic_player_button_press('final'),
+                                      command=lambda: controller.get_final_blochs(),
                                       height=2, width=20)
         self.final_button.place(x=10, y=50)
         self.result_button = tk.Button(self.canvas, text="Result",
-                                       command=lambda: controller.basic_player_button_press('result'),
+                                       command=lambda: controller.show_result(),
                                        height=2, width=20)
         self.result_button.place(x=10, y=100)
 
@@ -78,10 +78,10 @@ class BasicPlayerGUI(BasePlayerGUI):
         self.bloch_bm = self.canvas.create_image((self.space_size + temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='bm')
         self.bloch_br = self.canvas.create_image((self.space_size*2 + temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='br')
 
-        self.blochs_imgs = [self.bloch_tl, self.bloch_tm, self.bloch_tr,
-                            self.bloch_ml, self.bloch_mm, self.bloch_mr,
-                            self.bloch_bl, self.bloch_bm, self.bloch_br]
-
+        self.bloch_canvas_objs = [self.bloch_tl, self.bloch_tm, self.bloch_tr,
+                                  self.bloch_ml, self.bloch_mm, self.bloch_mr,
+                                  self.bloch_bl, self.bloch_bm, self.bloch_br]
+        self.bloch_imgs = [self.starting_img]*9
         # Draw lines of the TicTacToe grid
         x1 = self.space_size + self.x_offset
         x2 = self.space_size*2 + self.x_offset
@@ -135,15 +135,13 @@ class BasicPlayerGUI(BasePlayerGUI):
         img = self.canvas.create_image(((self.x_offset + x*self.space_size), self.space_size*y), image=play, anchor=tk.NW)
 
         self.plays_imgs.append(img)
-        # TODO fade out the Bloch sphere in the given location
-        # could just load a new faded image
-        # self.current_frame.canvas.itemconfig(self.current_frame.bloch_tl, image = self.current_frame.nought)
 
     def draw_bloch(self, bloch_index, loc_index):
-        bloch = self.load_bloch_image('/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/testing/bloch'
-                                      + str(bloch_index) + '.png')
+        print('drawing bloch ', bloch_index, ' at ', loc_index)
+        path = '/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/testing/bloch'
+        self.bloch_imgs[loc_index] = self.load_bloch_image(path + str(bloch_index) + '.png')
 
-        self.canvas.itemconfig(self.blochs_imgs[loc_index], image=bloch)
+        self.canvas.itemconfig(self.bloch_canvas_objs[loc_index], image=self.bloch_imgs[loc_index])
 
     def show_states_pressed(self):
 
@@ -155,7 +153,6 @@ class BasicPlayerGUI(BasePlayerGUI):
             text = "Pause"
 
         self.states_button.configure(text=text)
-        self.controller.basic_player_button_press('states')
 
         if self.showing_states:
             self._animate_states()
@@ -165,13 +162,16 @@ class BasicPlayerGUI(BasePlayerGUI):
         # check you are still animating
         if self.showing_states:
             # get the next thing to draw from the controller
-            self.window.after(500, self._animate_states)
+            self.controller.get_next_blochs()
+
+            # loop
+            self.window.after(600, self._animate_states)
 
     def reset(self):
         self.plays = []
 
         # reset the Bloch sphere pictures
-        for bloch in self.blochs_imgs:
+        for bloch in self.bloch_canvas_objs:
             self.canvas.itemconfig(bloch, image=self.starting_img)
 
         for img in self.plays_imgs:

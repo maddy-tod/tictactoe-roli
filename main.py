@@ -33,6 +33,8 @@ class MainHandler:
         self.winner = -1
 
         self.logic = GameLogic()
+        self.computers_turn = False
+        self.q_animating_frame = 0
 
     def draw_x(self, index):
         self.gui.draw_x(index)
@@ -42,21 +44,29 @@ class MainHandler:
         self.gui.draw_o(index)
         self.board[index] = 2
 
-    def computers_turn(self):
+    def computer_take_turn(self):
         # check to see if the player has won
         self.winner = self.logic.check_for_winner(self.board)
+        if self.winner != -1:
+            self.draw_result()
+
+        self.computers_turn = True
+        self.qcomputer.take_turn(self.board)
+
+    def _show_computer_turn(self):
 
         # no one has won and there are still spaces left
         if self.winner == -1 and any([x is None for x in self.board]):
-            move = self.qcomputer.take_turn(self.board)
-            print("computer is taking turn")
+            move = self.qcomputer.move
             self.draw_o(move)
             self.roli.send_move(move)
 
             # check to see if the computer has won
             self.winner = self.logic.check_for_winner(self.board)
-            if self.winner != -1 :
+            if self.winner != -1:
                 self.draw_result()
+
+            self.computers_turn = False
         else:
             # could be a draw or a winner
             self.draw_result()
@@ -71,6 +81,63 @@ class MainHandler:
         self.winner = -1
 
         self.gui.reset()
+
+    def get_next_blochs(self):
+        """Get the next bloch spheres to be shown in the animation"""
+        if self.computers_turn:
+
+            q_blochs = self.qcomputer.num_t_gates
+
+            if self.q_animating_frame == 0:
+                # reset all to pointing up
+                blochs = [('', x) for x in range(0, 9)]
+            elif self.q_animating_frame == 1:
+                # move the ones which aren't possible moves
+                blochs = [(-1, x) for x in range(0, 9) if q_blochs[x] == -1]
+
+            elif self.q_animating_frame == 2:
+                # H everyone
+                # Bloch 0 at every index
+                blochs = [(0, x) for x in range(0, 9) if q_blochs[x] != -1]
+
+            else:
+                # first three frames are taken by setup
+                qubit = self.q_animating_frame - 3
+
+                while qubit < len(q_blochs) - 1 and q_blochs[qubit] <= 0:
+                    qubit += 1
+
+                # at the end
+                if qubit > 8:
+                    print('I would be showing the other bloch spheres here if I could')
+                    self._show_computer_turn()
+
+                    # reset
+                    self.computers_turn = False
+                    self.q_animating_frame = 0
+                    return []
+
+                blochs = [(q_blochs[qubit], qubit)]
+
+            self.q_animating_frame += 1
+            return blochs
+
+    def get_final_blochs(self):
+        """Get the final Bloch sphere states"""
+        if self.computers_turn:
+
+            q_blochs = self.qcomputer.num_t_gates
+
+            blochs = [(q_blochs[x], x) for x in range(0,9)]
+            return blochs
+
+    def show_result(self):
+        """Show the computers turn"""
+        if self.computers_turn:
+            self._show_computer_turn()
+            # reset
+            self.computers_turn = False
+            self.q_animating_frame = 0
 
 
 if __name__ == "__main__":
