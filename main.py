@@ -16,9 +16,11 @@
 # =============================================================================
 import logging
 from GUI.MainGUI import NoughtsAndCrossesApp
-from RoliHandler import RoliBlockHandler
-from BasicQPlayer import BasicQPlayer
-from Logic.GameLogic import GameLogic
+from Roli.RoliHandler import RoliBlockHandler
+from PlayerLogic.BasicQPlayer import BasicQPlayer
+from PlayerLogic.GroverQPlayer import GroverQPlayer
+from PlayerLogic.SVMQPlayer import SVMQPlayer
+from GameLogic.GameLogic import GameLogic
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -35,6 +37,7 @@ class MainHandler:
         self.logic = GameLogic()
         self.computers_turn = False
         self.q_animating_frame = 0
+        self.svm = SVMQPlayer()
 
     def draw_x(self, index):
         self.gui.draw_x(index)
@@ -128,7 +131,7 @@ class MainHandler:
 
             q_blochs = self.qcomputer.num_t_gates
 
-            blochs = [(q_blochs[x], x) for x in range(0,9)]
+            blochs = [(q_blochs[x], x) for x in range(0, 9)]
             return blochs
 
     def show_result(self):
@@ -139,6 +142,27 @@ class MainHandler:
             self.computers_turn = False
             self.q_animating_frame = 0
 
+    def change_computer(self, computer_name):
+
+        # Has GUI at the end as its the name of the frame
+        if computer_name == "BasicPlayerGUI":
+            self.qcomputer = BasicQPlayer()
+        elif computer_name == "GroverPlayerGUI":
+            self.qcomputer = GroverQPlayer()
+        elif computer_name == "SVMPlayerGUI":
+
+            # stop havign to retrain SVM
+            if not self.svm :
+                self.svm = SVMQPlayer()
+
+            self.qcomputer = self.svm
+
+        #TODO reset the Roli too
+
+    def get_svm_counts(self, size):
+        if self.computers_turn:
+            return self.qcomputer.get_data_view(self.board, size)
+        return None
 
 if __name__ == "__main__":
 

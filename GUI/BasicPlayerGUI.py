@@ -29,68 +29,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class BasicPlayerGUI(BasePlayerGUI):
 
     def __init__(self, parent, controller, **args):
-        tk.Frame.__init__(self, parent, **args)
+        super().__init__(parent, controller, 'Terra Player', **args)
         self.window = parent
-        self.controller = controller
-        label = tk.Label(self, text="Basic Player", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-
-        self.canvas = tk.Canvas(self, width=1100, height=600)
-        self.buttons_canvas = tk.Canvas(self, width=100, height=600)
-
-        self.x_offset = 300
-        self.space_size = 170
-
-        # if we wanted to re draw the images
-        # self.gen_images()
-
-        # Add buttons for the different modes
-        self.states_button = tk.Button(self.canvas, text="Show setup states",
-                                       command=lambda: self.show_states_pressed(),
-                                       height=2, width=20)
-        self.states_button.place(x=10, y=0)
-        # We are not currently showing how the states change
-        self.showing_states = False
-        self.final_button = tk.Button(self.canvas, text="Show final states",
-                                      command=lambda: controller.get_final_blochs(),
-                                      height=2, width=20)
-        self.final_button.place(x=10, y=50)
-        self.result_button = tk.Button(self.canvas, text="Result",
-                                       command=lambda: controller.show_result(),
-                                       height=2, width=20)
-        self.result_button.place(x=10, y=100)
-
-        # Allows for a bit of padding
-        temp_x_offset = self.x_offset + 10
-        # load the starting image
-        self.starting_img = self.load_bloch_image('GUI/imgs/starting/tl.png')
-
-        # add this image into all the grid spaces
-        self.bloch_tl = self.canvas.create_image((temp_x_offset, 0), image=self.starting_img, anchor=tk.NW, tag='tl')
-        self.bloch_tm = self.canvas.create_image((self.space_size + temp_x_offset, 0), image=self.starting_img, anchor=tk.NW, tag='tm')
-        self.bloch_tr = self.canvas.create_image((self.space_size*2 + temp_x_offset, 0), image=self.starting_img, anchor=tk.NW, tag='tr')
-
-        self.bloch_ml = self.canvas.create_image((temp_x_offset, self.space_size), image=self.starting_img, anchor=tk.NW, tag='ml')
-        self.bloch_mm = self.canvas.create_image((self.space_size + temp_x_offset, self.space_size), image=self.starting_img, anchor=tk.NW, tag='mm')
-        self.bloch_mr = self.canvas.create_image((self.space_size*2 + temp_x_offset, self.space_size), image=self.starting_img, anchor=tk.NW, tag='mr')
-
-        self.bloch_bl = self.canvas.create_image((temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='bl')
-        self.bloch_bm = self.canvas.create_image((self.space_size + temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='bm')
-        self.bloch_br = self.canvas.create_image((self.space_size*2 + temp_x_offset, self.space_size*2), image=self.starting_img, anchor=tk.NW, tag='br')
-
-        self.bloch_canvas_objs = [self.bloch_tl, self.bloch_tm, self.bloch_tr,
-                                  self.bloch_ml, self.bloch_mm, self.bloch_mr,
-                                  self.bloch_bl, self.bloch_bm, self.bloch_br]
-        self.bloch_imgs = [self.starting_img]*9
-        # Draw lines of the TicTacToe grid
-        x1 = self.space_size + self.x_offset
-        x2 = self.space_size*2 + self.x_offset
-        self.canvas.create_line(x1, 0, x1, self.space_size*3, fill='black', width=6)
-        self.canvas.create_line(x2, 0, x2, self.space_size*3, fill='black', width=6)
-
-        self.canvas.create_line(self.x_offset, self.space_size, self.space_size*3 + self.x_offset, self.space_size, fill='black', width=6)
-        self.canvas.create_line(self.x_offset, self.space_size*2, self.space_size*3 + self.x_offset, self.space_size*2, fill='black', width=6)
-        self.canvas.pack()
+        self.draw_canvas()
 
         # stored the noughts and crosses images that have been played
         self.plays = []
@@ -100,7 +41,6 @@ class BasicPlayerGUI(BasePlayerGUI):
 
     def load_bloch_image(self, file):
         img = Image.open(file)
-        print(img.size)
         img = img.crop((50, 0, 480, 475))
         w, h = img.size
         img = img.resize((int(w * 0.35), int(h * 0.35)), Image.ANTIALIAS)
@@ -137,7 +77,6 @@ class BasicPlayerGUI(BasePlayerGUI):
         self.plays_imgs.append(img)
 
     def draw_bloch(self, bloch_index, loc_index):
-        print('drawing bloch ', bloch_index, ' at ', loc_index)
         path = '/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/testing/bloch'
         self.bloch_imgs[loc_index] = self.load_bloch_image(path + str(bloch_index) + '.png')
 
@@ -177,5 +116,81 @@ class BasicPlayerGUI(BasePlayerGUI):
         for img in self.plays_imgs:
             self.canvas.delete(img)
 
+    def draw_canvas(self):
+        self.x_offset = 300
+        self.space_size = 170
+
+        # if we wanted to re draw the images
+        # self.gen_images()
+
+        # Add buttons for the different modes
+        self.states_button = tk.Button(self.canvas, text="Show setup states",
+                                       command=lambda: self.show_states_pressed(),
+                                       height=2, width=20)
+        self.states_button.place(x=10, y=0)
+        # We are not currently showing how the states change
+        self.showing_states = False
+        self.final_button = tk.Button(self.canvas, text="Show final states",
+                                      command=lambda: self.controller.get_final_blochs(),
+                                      height=2, width=20)
+        self.final_button.place(x=10, y=50)
+        self.result_button = tk.Button(self.canvas, text="Result",
+                                       command=lambda: self.controller.show_result(),
+                                       height=2, width=20)
+        self.result_button.place(x=10, y=100)
+
+        # Allows for a bit of padding
+        temp_x_offset = self.x_offset + 10
+        # load the starting image
+        self.starting_img = self.load_bloch_image('GUI/imgs/starting/tl.png')
+
+        # add this image into all the grid spaces
+        self.bloch_tl = self.canvas.create_image((temp_x_offset, 0), image=self.starting_img, anchor=tk.NW, tag='tl')
+        self.bloch_tm = self.canvas.create_image((self.space_size + temp_x_offset, 0), image=self.starting_img,
+                                                 anchor=tk.NW, tag='tm')
+        self.bloch_tr = self.canvas.create_image((self.space_size * 2 + temp_x_offset, 0), image=self.starting_img,
+                                                 anchor=tk.NW, tag='tr')
+
+        self.bloch_ml = self.canvas.create_image((temp_x_offset, self.space_size), image=self.starting_img,
+                                                 anchor=tk.NW, tag='ml')
+        self.bloch_mm = self.canvas.create_image((self.space_size + temp_x_offset, self.space_size),
+                                                 image=self.starting_img, anchor=tk.NW, tag='mm')
+        self.bloch_mr = self.canvas.create_image((self.space_size * 2 + temp_x_offset, self.space_size),
+                                                 image=self.starting_img, anchor=tk.NW, tag='mr')
+
+        self.bloch_bl = self.canvas.create_image((temp_x_offset, self.space_size * 2), image=self.starting_img,
+                                                 anchor=tk.NW, tag='bl')
+        self.bloch_bm = self.canvas.create_image((self.space_size + temp_x_offset, self.space_size * 2),
+                                                 image=self.starting_img, anchor=tk.NW, tag='bm')
+        self.bloch_br = self.canvas.create_image((self.space_size * 2 + temp_x_offset, self.space_size * 2),
+                                                 image=self.starting_img, anchor=tk.NW, tag='br')
+
+        self.bloch_canvas_objs = [self.bloch_tl, self.bloch_tm, self.bloch_tr,
+                                  self.bloch_ml, self.bloch_mm, self.bloch_mr,
+                                  self.bloch_bl, self.bloch_bm, self.bloch_br]
+        self.bloch_imgs = [self.starting_img] * 9
+        # Draw lines of the TicTacToe grid
+        x1 = self.space_size + self.x_offset
+        x2 = self.space_size * 2 + self.x_offset
+        self.canvas.create_line(x1, 0, x1, self.space_size * 3, fill='black', width=6)
+        self.canvas.create_line(x2, 0, x2, self.space_size * 3, fill='black', width=6)
+
+        self.canvas.create_line(self.x_offset, self.space_size, self.space_size * 3 + self.x_offset, self.space_size,
+                                fill='black', width=6)
+        self.canvas.create_line(self.x_offset, self.space_size * 2, self.space_size * 3 + self.x_offset,
+                                self.space_size * 2, fill='black', width=6)
+        self.canvas.pack()
+
+    def moving_off(self):
+        print("ugh")
+
+        self.states_button.place_forget()
+        self.states_button.destroy()
+        self.final_button.place_forget()
+        self.result_button.place_forget()
+
+        self.canvas.place_forget()
+        self.canvas.delete("all")
+        self.canvas.pack()
 
 

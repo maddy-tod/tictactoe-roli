@@ -1,0 +1,12 @@
+c These are my rules from WikiHow
+c each number corresponds to a space on the grid, and a negated symbol
+c means the opponent has played in that space already
+p cnf 9 8
+1 2 3 0
+4 5 6 0
+7 8 9 0
+1 4 7 0
+2 5 8 0
+3 6 9 0
+1 5 9 0
+3 5 7 0

@@ -179,15 +179,12 @@ class BasicQPlayer:
         for key, count in sim_result.items():
             # need to iterate over the results and see when the value was chosen most
 
-            #keys are the opposite way round to expected
+            # keys are the opposite way round to expected
             key = key[::-1]
             print(key, " : ", count)
             for index, val in enumerate(key):
                 if val == '1':
                     counts[index] += count
-
-        for i, c in enumerate(counts):
-            print(i, " - ", c, ' occupied? ', board[i])
 
         max_count = 0
         max_index = 0

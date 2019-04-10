@@ -24,8 +24,8 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class GroverPlayerGUI(BasePlayerGUI):
 
     def __init__(self, parent, controller, **args):
-        tk.Frame.__init__(self, parent, **args)
-        self.controller = controller
-        label = tk.Label(self, text="Grover ", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
-        self.configure(bg="red")
+        super().__init__(parent, controller, 'Grover Player', **args)
+
+        #self.canvas.configure(bg='red')
+        self.canvas.pack()
+

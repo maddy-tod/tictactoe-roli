@@ -15,38 +15,6 @@
 # limitations under the License.
 # =============================================================================
 import logging
-import tkinter as tk
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
-class BasePlayerGUI(tk.Frame):
-    def __init__(self, parent, controller, labeltxt, **args):
-        tk.Frame.__init__(self, parent, **args)
-        self.controller = controller
-        label = tk.Label(self, text=labeltxt, font=controller.title_font)
-        label.pack(side="top", fill="x", pady=5)
-
-        self.canvas = tk.Canvas(self, width=1100, height=600)
-        self.canvas.pack()
-
-    def draw_x(self, index):
-        pass
-
-    def draw_o(self, index):
-        pass
-
-    def moving_off(self):
-        self.canvas.pack_forget()
-        self.canvas.delete("all")
-        self.canvas.pack()
-
-    def pack(self):
-        self.canvas.pack()
-
-    def moving_to(self):
-        self.draw_canvas()
-
-    def draw_canvas(self):
-        pass

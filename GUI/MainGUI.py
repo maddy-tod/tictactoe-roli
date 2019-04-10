@@ -38,15 +38,15 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         # container contains the diff options
         # TODO make this dynamic
-        player_container = tk.Frame(self, width=1100, height=600)#, bg='blue')
-        player_container.grid(row=1, column=1)
-        player_container.grid_propagate(False)
+        self.player_container = tk.Frame(self, width=1100, height=600, bg='green')
+        self.player_container.grid(row=1, column=1)
+        self.player_container.grid_propagate(False)
 
         self.frames = {}
         self.current_frame = None
         for F in (BasicPlayerGUI, GroverPlayerGUI, SVMPlayerGUI):
             page_name = F.__name__
-            frame = F(parent=player_container, controller=self, width=1100, height=600,)
+            frame = F(parent=self.player_container, controller=self, width=1100, height=600)
             self.frames[page_name] = frame
 
             # put all of the pages in the same location;
@@ -74,9 +74,14 @@ class NoughtsAndCrossesApp(tk.Tk):
 
     def show_frame(self, page_name):
         """Show a frame for the given page name"""
+
         frame = self.frames[page_name]
         frame.tkraise()
+        if self.current_frame:
+            self.current_frame.moving_off()
         self.current_frame = frame
+        self.current_frame.moving_to()
+        self.controller.change_computer(page_name)
 
     def draw_x(self, index):
         self.current_frame.draw_x(index)
@@ -94,7 +99,6 @@ class NoughtsAndCrossesApp(tk.Tk):
         print(button)
 
     def get_next_blochs(self):
-        print('trying to get blochs')
         blochs = self.controller.get_next_blochs()
 
         if blochs :
@@ -116,6 +120,26 @@ class NoughtsAndCrossesApp(tk.Tk):
 
     def show_result(self):
         self.controller.show_result()
+
+    def show_q_view(self):
+        print('Showing what the quantum computer sees')
+        self._show_view(size=3)
+
+    def show_c_view(self):
+        print('Showing what the classical computer sees')
+        self._show_view(size=9)
+
+    def _show_view(self, size):
+        counts_dict = self.controller.get_svm_counts(size=size)
+
+        # returns None if clicked when not computers turn
+        if counts_dict:
+            total_moves = sum(counts_dict.values())
+
+            self.current_frame.reset_potential_moves()
+
+            for move, count in counts_dict.items():
+                self.current_frame.draw_potential_move(int(move), intensity=count / total_moves)
 
 
 if __name__ == "__main__":
