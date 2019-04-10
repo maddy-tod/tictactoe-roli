@@ -15,7 +15,6 @@
 # limitations under the License.
 # =============================================================================
 import tkinter as tk
-from tkinter import font as tkfont
 from GUI import *
 
 
@@ -26,8 +25,6 @@ class NoughtsAndCrossesApp(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.controller = controller
-
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
         tk.Canvas(self, width=150, height=70).grid(row=0, column=0)
         self.geometry("1500x800")
@@ -94,6 +91,9 @@ class NoughtsAndCrossesApp(tk.Tk):
 
     def reset(self):
         self.current_frame.reset()
+
+    def set_winner(self, winner):
+        self.current_frame.show_winner(winner)
 
     def basic_player_button_press(self, button):
         print(button)

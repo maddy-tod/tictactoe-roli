@@ -34,7 +34,7 @@ class GroverQPlayer:
         Args:
             board [int] : the current state of the board
         """
-        with open('SATRules.cnf', 'r') as f:
+        with open('PlayerLogic/data/SATRules.cnf', 'r') as f:
             sat_cnf = f.read()
 
         print(board)

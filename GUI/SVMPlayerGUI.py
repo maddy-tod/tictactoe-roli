@@ -28,25 +28,10 @@ class SVMPlayerGUI(BasePlayerGUI):
     def __init__(self, parent, controller, **args):
         super().__init__(parent, controller, 'SVM Player', **args)
 
-        self.draw_canvas()
-        # stored the noughts and crosses images that have been played
-        self.plays = []
-        self.plays_imgs = []
-
-        # store the potential moves
-        self.potenial_moves_actual_imgs = []
         self.potenial_moves_canvas_imgs = []
+        self.potenial_moves_actual_imgs = []
 
-        self.nought = self.load_other_image('GUI/imgs/players/o.png')
-        self.cross = self.load_other_image('GUI/imgs/players/x.png')
-
-    def draw_x(self, index):
-        self._draw_move(self.cross, index)
-
-    def load_other_image(self, file):
-        img = Image.open(file)
-        img = img.resize((self.space_size, self.space_size), Image.ANTIALIAS)
-        return ImageTk.PhotoImage(img)
+        self.draw_canvas()
 
     def load_faded_image(self, file, alpha):
         img = Image.open(file)
@@ -58,27 +43,11 @@ class SVMPlayerGUI(BasePlayerGUI):
         img.putalpha(alpha)
         return ImageTk.PhotoImage(img)
 
-    def draw_o(self, index):
-        self._draw_move(self.nought, index)
-
-    def _draw_move(self, play, index):
-        # need to store a ref to the image otherwise they get lost
-        self.plays.append(play)
-
-        # remove the potential moves form the board
-        self.reset_potential_moves()
-
-        x = index % 3
-        y = int(index / 3)
-        img = self.canvas.create_image(((self.x_offset + x * self.space_size), self.space_size * y), image=play,
-                                       anchor=tk.NW)
-
-        self.plays_imgs.append(img)
-
     def reset(self):
         self.plays = []
 
         self.reset_potential_moves()
+        self.canvas.itemconfigure(self.state_label, text="Player's turn!")
 
     def draw_potential_move(self, index, intensity=1):
 
@@ -102,10 +71,7 @@ class SVMPlayerGUI(BasePlayerGUI):
         self.potenial_moves_canvas_imgs = []
         self.potenial_moves_actual_imgs = []
 
-
     def draw_canvas(self):
-        self.x_offset = 300
-        self.space_size = 170
 
         # Add buttons for the different modes
         self.quantum_button = tk.Button(self.canvas, text="Show quantum view",
@@ -121,16 +87,6 @@ class SVMPlayerGUI(BasePlayerGUI):
                                        height=2, width=20)
         self.result_button.place(x=10, y=100)
 
+        self.draw_grid()
 
-        # Draw lines of the TicTacToe grid
-        x1 = self.space_size + self.x_offset
-        x2 = self.space_size * 2 + self.x_offset
 
-        self.canvas.create_line(x1, 0, x1, self.space_size * 3, fill='black', width=6)
-        self.canvas.create_line(x2, 0, x2, self.space_size * 3, fill='black', width=6)
-
-        self.canvas.create_line(self.x_offset, self.space_size, self.space_size * 3 + self.x_offset, self.space_size,
-                                fill='black', width=6)
-        self.canvas.create_line(self.x_offset, self.space_size * 2, self.space_size * 3 + self.x_offset,
-                                self.space_size * 2, fill='black', width=6)
-        self.canvas.pack()

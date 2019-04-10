@@ -77,6 +77,16 @@ class MainHandler:
     def draw_result(self):
         self.roli.send_winner(self.winner)
 
+        if self.winner == 1:
+            winner = 'You'
+        elif self.winner == 2:
+            winner = 'The quantum computer'
+        else :
+            winner = 'No one'
+
+        self.gui.set_winner(winner)
+
+
     def reset(self):
         self.board = [None] * 9
         self.qcomputer = BasicQPlayer()
@@ -163,6 +173,7 @@ class MainHandler:
         if self.computers_turn:
             return self.qcomputer.get_data_view(self.board, size)
         return None
+
 
 if __name__ == "__main__":
 

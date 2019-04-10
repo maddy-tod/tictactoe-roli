@@ -22,7 +22,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 class BasicQPlayer:
     def __init__(self):
-        print("made a q player")
         self.move = 0
 
         self.num_t_gates = [0]*9
@@ -123,7 +122,6 @@ class BasicQPlayer:
                         qc.t(q[index])
                         t_count += 1
 
-                print("applied ", t_count,  " t gates to ", index)
                 self.num_t_gates[index] = t_count
 
         # hard code in the diagonals
@@ -132,37 +130,31 @@ class BasicQPlayer:
             qc.t(q[8])
             qc.t(q[8])
             self.num_t_gates[8] += 3
-            print('extra t gate for 8')
         if board[0] and board[0] == board[8]:
             qc.t(q[4])
             qc.t(q[4])
             qc.t(q[4])
             self.num_t_gates[4] += 3
-            print('extra t gate for 4')
         if board[4] and board[4] == board[8]:
             qc.t(q[0])
             qc.t(q[0])
             qc.t(q[0])
             self.num_t_gates[0] += 3
-            print('extra t gate for 0')
         if board[2] and board[2] == board[4]:
             qc.t(q[6])
             qc.t(q[6])
             qc.t(q[6])
             self.num_t_gates[6] += 3
-            print('extra t gate for 6')
         if board[2] and board[2] == board[6]:
             qc.t(q[4])
             qc.t(q[4])
             qc.t(q[4])
             self.num_t_gates[4] += 3
-            print('extra t gate for 4')
         if board[4] and board[4] == board[6]:
             qc.t(q[2])
             qc.t(q[2])
             qc.t(q[2])
             self.num_t_gates[2] += 3
-            print('extra t gate for 2')
 
         for index, move in enumerate(board):
             if not move:
@@ -181,7 +173,6 @@ class BasicQPlayer:
 
             # keys are the opposite way round to expected
             key = key[::-1]
-            print(key, " : ", count)
             for index, val in enumerate(key):
                 if val == '1':
                     counts[index] += count
@@ -193,5 +184,4 @@ class BasicQPlayer:
                 max_index = index
                 max_count = count
 
-        print("move : ", max_index)
         self.move = max_index

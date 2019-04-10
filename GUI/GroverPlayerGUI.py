@@ -26,6 +26,16 @@ class GroverPlayerGUI(BasePlayerGUI):
     def __init__(self, parent, controller, **args):
         super().__init__(parent, controller, 'Grover Player', **args)
 
-        #self.canvas.configure(bg='red')
         self.canvas.pack()
+
+    def draw_canvas(self):
+        # Add buttons for the different modes
+        self.result_button = tk.Button(self.canvas, text="Result",
+                                       command=lambda: self.controller.show_result(),
+                                       height=2, width=20)
+        self.result_button.place(x=10, y=0)
+
+        self.canvas.create_rectangle(10, 20, 50, 100, outline="")
+        self.draw_grid()
+
 

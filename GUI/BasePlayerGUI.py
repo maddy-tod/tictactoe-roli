@@ -16,6 +16,9 @@
 # =============================================================================
 import logging
 import tkinter as tk
+from tkinter import font as tkfont
+
+from PIL import Image, ImageTk
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -25,22 +28,72 @@ class BasePlayerGUI(tk.Frame):
     def __init__(self, parent, controller, labeltxt, **args):
         tk.Frame.__init__(self, parent, **args)
         self.controller = controller
-        label = tk.Label(self, text=labeltxt, font=controller.title_font)
+
+        title_font = tkfont.Font(family='Helvetica', size=30, weight="bold", slant="italic")
+        label = tk.Label(self, text=labeltxt, font=title_font)
         label.pack(side="top", fill="x", pady=5)
 
         self.canvas = tk.Canvas(self, width=1100, height=600)
+
+        label_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
+        self.state_label = self.canvas.create_text((1000, 190), text="Player's turn!", font=label_font)
         self.canvas.pack()
 
+        self.x_offset = 300
+        self.space_size = 170
+
+        # stored the noughts and crosses images that have been played
+        self.plays = []
+        self.plays_imgs = []
+        self.nought = self.load_other_image('GUI/imgs/players/o.png')
+        self.cross = self.load_other_image('GUI/imgs/players/x.png')
+
+    def load_other_image(self, file):
+        img = Image.open(file)
+        img = img.resize((self.space_size, self.space_size), Image.ANTIALIAS)
+        return ImageTk.PhotoImage(img)
+
     def draw_x(self, index):
-        pass
+        self._draw_move(self.cross, index)
+        self.canvas.itemconfigure(self.state_label, text="Computer's turn")
 
     def draw_o(self, index):
-        pass
+        self._draw_move(self.nought, index)
+        self.canvas.itemconfigure(self.state_label, text="Player's turn!")
+
+    def _draw_move(self, play, index):
+        # need to store a ref to the image otherwise they get lost
+        self.plays.append(play)
+
+        x = index % 3
+        y = int(index / 3)
+        img = self.canvas.create_image(((self.x_offset + x * self.space_size), self.space_size * y), image=play,
+                                       anchor=tk.NW)
+
+        self.plays_imgs.append(img)
+
+    def draw_grid(self):
+        # Draw lines of the TicTacToe grid
+        x1 = self.space_size + self.x_offset
+        x2 = self.space_size * 2 + self.x_offset
+
+        self.canvas.create_line(x1, 0, x1, self.space_size * 3, fill='black', width=6)
+        self.canvas.create_line(x2, 0, x2, self.space_size * 3, fill='black', width=6)
+
+        self.canvas.create_line(self.x_offset, self.space_size, self.space_size * 3 + self.x_offset, self.space_size,
+                                fill='black', width=6)
+        self.canvas.create_line(self.x_offset, self.space_size * 2, self.space_size * 3 + self.x_offset,
+                                self.space_size * 2, fill='black', width=6)
+
+        self.canvas.pack()
 
     def moving_off(self):
         self.canvas.pack_forget()
         self.canvas.delete("all")
         self.canvas.pack()
+
+    def show_winner(self, winner):
+        self.canvas.itemconfigure(self.state_label, text=winner + " won!")
 
     def pack(self):
         self.canvas.pack()
@@ -50,3 +103,6 @@ class BasePlayerGUI(tk.Frame):
 
     def draw_canvas(self):
         pass
+
+    def reset(self):
+        self.canvas.itemconfigure(self.state_label, text="Player's turn!")

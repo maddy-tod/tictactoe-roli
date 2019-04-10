@@ -33,12 +33,6 @@ class BasicPlayerGUI(BasePlayerGUI):
         self.window = parent
         self.draw_canvas()
 
-        # stored the noughts and crosses images that have been played
-        self.plays = []
-        self.plays_imgs = []
-        self.nought = self.load_other_image('GUI/imgs/players/o.png')
-        self.cross = self.load_other_image('GUI/imgs/players/x.png')
-
     def load_bloch_image(self, file):
         img = Image.open(file)
         img = img.crop((50, 0, 480, 475))
@@ -59,12 +53,6 @@ class BasicPlayerGUI(BasePlayerGUI):
         for loc in locations:
             x = plot_bloch_vector([0, 0, 1])
             x.savefig('/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/starting/' + loc + '.png')
-
-    def draw_x(self, index):
-        self._draw_move(self.cross, index)
-
-    def draw_o(self, index):
-        self._draw_move(self.nought, index)
 
     def _draw_move(self, play, index):
         # need to store a ref to the image otherwise they get lost
@@ -116,10 +104,9 @@ class BasicPlayerGUI(BasePlayerGUI):
         for img in self.plays_imgs:
             self.canvas.delete(img)
 
-    def draw_canvas(self):
-        self.x_offset = 300
-        self.space_size = 170
+        self.canvas.itemconfigure(self.state_label, text="Player's turn!")
 
+    def draw_canvas(self):
         # if we wanted to re draw the images
         # self.gen_images()
 
@@ -169,20 +156,10 @@ class BasicPlayerGUI(BasePlayerGUI):
                                   self.bloch_ml, self.bloch_mm, self.bloch_mr,
                                   self.bloch_bl, self.bloch_bm, self.bloch_br]
         self.bloch_imgs = [self.starting_img] * 9
-        # Draw lines of the TicTacToe grid
-        x1 = self.space_size + self.x_offset
-        x2 = self.space_size * 2 + self.x_offset
-        self.canvas.create_line(x1, 0, x1, self.space_size * 3, fill='black', width=6)
-        self.canvas.create_line(x2, 0, x2, self.space_size * 3, fill='black', width=6)
 
-        self.canvas.create_line(self.x_offset, self.space_size, self.space_size * 3 + self.x_offset, self.space_size,
-                                fill='black', width=6)
-        self.canvas.create_line(self.x_offset, self.space_size * 2, self.space_size * 3 + self.x_offset,
-                                self.space_size * 2, fill='black', width=6)
-        self.canvas.pack()
+        self.draw_grid()
 
     def moving_off(self):
-        print("ugh")
 
         self.states_button.place_forget()
         self.states_button.destroy()
