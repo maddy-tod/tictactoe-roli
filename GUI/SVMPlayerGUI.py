@@ -43,11 +43,14 @@ class SVMPlayerGUI(BasePlayerGUI):
         img.putalpha(alpha)
         return ImageTk.PhotoImage(img)
 
+    def draw_o(self, index):
+        super().draw_o(index)
+        self.reset_potential_moves()
+
     def reset(self):
-        self.plays = []
+        super().reset()
 
         self.reset_potential_moves()
-        self.canvas.itemconfigure(self.state_label, text="Player's turn!")
 
     def draw_potential_move(self, index, intensity=1):
 

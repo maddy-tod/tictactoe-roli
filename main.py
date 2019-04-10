@@ -80,7 +80,7 @@ class MainHandler:
         if self.winner == 1:
             winner = 'You'
         elif self.winner == 2:
-            winner = 'The quantum computer'
+            winner = 'The Computer'
         else :
             winner = 'No one'
 
@@ -157,21 +157,23 @@ class MainHandler:
         # Has GUI at the end as its the name of the frame
         if computer_name == "BasicPlayerGUI":
             self.qcomputer = BasicQPlayer()
+            print('Using Basic')
         elif computer_name == "GroverPlayerGUI":
             self.qcomputer = GroverQPlayer()
+            print('Using Grover')
         elif computer_name == "SVMPlayerGUI":
+            print('Using SVM')
 
-            # stop havign to retrain SVM
-            if not self.svm :
-                self.svm = SVMQPlayer()
-
+            # svm is stored to prevent from having to retrain
             self.qcomputer = self.svm
 
         #TODO reset the Roli too
 
     def get_svm_counts(self, size):
-        if self.computers_turn:
-            return self.qcomputer.get_data_view(self.board, size)
+        print(type(self.qcomputer))
+
+        if self.computers_turn :
+            return self.svm.get_data_view(self.board, size)
         return None
 
 

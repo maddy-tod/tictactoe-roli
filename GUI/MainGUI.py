@@ -95,9 +95,6 @@ class NoughtsAndCrossesApp(tk.Tk):
     def set_winner(self, winner):
         self.current_frame.show_winner(winner)
 
-    def basic_player_button_press(self, button):
-        print(button)
-
     def get_next_blochs(self):
         blochs = self.controller.get_next_blochs()
 
@@ -110,7 +107,6 @@ class NoughtsAndCrossesApp(tk.Tk):
             self.current_frame.show_states_pressed()
 
     def get_final_blochs(self):
-        print('trying to get final blochs')
         blochs = self.controller.get_final_blochs()
 
         if blochs:
@@ -122,11 +118,9 @@ class NoughtsAndCrossesApp(tk.Tk):
         self.controller.show_result()
 
     def show_q_view(self):
-        print('Showing what the quantum computer sees')
         self._show_view(size=3)
 
     def show_c_view(self):
-        print('Showing what the classical computer sees')
         self._show_view(size=9)
 
     def _show_view(self, size):

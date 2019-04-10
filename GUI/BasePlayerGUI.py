@@ -105,4 +105,9 @@ class BasePlayerGUI(tk.Frame):
         pass
 
     def reset(self):
+        self.plays = []
+
+        for img in self.plays_imgs:
+            self.canvas.delete(img)
+
         self.canvas.itemconfigure(self.state_label, text="Player's turn!")
