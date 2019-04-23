@@ -48,8 +48,7 @@ class BasicQPlayer:
         for index, move in enumerate(board):
             if move:
                 qc.x(q[index])
-                self.num_t_gates[index] = -1
-            else :
+            else:
                 # this space is a potential move
                 # so put into a superposition
                 qc.h(q[index])
@@ -159,6 +158,9 @@ class BasicQPlayer:
         for index, move in enumerate(board):
             if not move:
                 qc.h(q[index])
+            else:
+                # if there is already a move there - don't show that any t gates were applied
+                self.num_t_gates[index] = -1
         qc.measure(q, c)
 
         backend = Aer.get_backend('qasm_simulator')
