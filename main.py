@@ -16,11 +16,12 @@
 # =============================================================================
 import logging
 from GUI.MainGUI import NoughtsAndCrossesApp
-from Roli.RoliHandler import RoliBlockHandler
+from UserInput import RoliBlockHandler, OnScreenHandler
 from PlayerLogic.BasicQPlayer import BasicQPlayer
 from PlayerLogic.GroverQPlayer import GroverQPlayer
 from PlayerLogic.SVMQPlayer import SVMQPlayer
 from GameLogic.GameLogic import GameLogic
+import pygame.midi
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -28,7 +29,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 class MainHandler:
     def __init__(self):
-        self.roli = None
+        self.user_input = None
         self.gui = None
         self.board = [None] * 9
         self.qcomputer = BasicQPlayer()
@@ -62,7 +63,7 @@ class MainHandler:
         if self.winner == -1 and any([x is None for x in self.board]):
             move = self.qcomputer.move
             self.draw_o(move)
-            self.roli.send_move(move)
+            self.user_input.send_move(move)
 
             # check to see if the computer has won
             self.winner = self.logic.check_for_winner(self.board)
@@ -75,7 +76,7 @@ class MainHandler:
             self.draw_result()
 
     def draw_result(self):
-        self.roli.send_winner(self.winner)
+        self.user_input.send_winner(self.winner)
 
         if self.winner == 1:
             winner = 'You'
@@ -122,15 +123,18 @@ class MainHandler:
 
                 # at the end
                 if qubit > 8:
-                    print('I would be showing the other bloch spheres here if I could')
+
+                    # show H across everything
+                    blochs = [('H' + str(q_blochs[qubit]), qubit) for qubit in range(0, 9) if q_blochs[qubit] != -1]
+
                     self._show_computer_turn()
 
                     # reset
                     self.computers_turn = False
                     self.q_animating_frame = 0
-                    return []
 
-                blochs = [(q_blochs[qubit], qubit)]
+                else:
+                    blochs = [(q_blochs[qubit], qubit)]
 
             self.q_animating_frame += 1
             return blochs
@@ -142,6 +146,8 @@ class MainHandler:
             q_blochs = self.qcomputer.num_t_gates
 
             blochs = [(q_blochs[x], x) for x in range(0, 9)]
+            blochs = [('H' + str(q_blochs[x]), x) if q_blochs[x] != -1 else (q_blochs[x], x) for x in range(0, 9)]
+
             return blochs
 
     def show_result(self):
@@ -172,7 +178,7 @@ class MainHandler:
     def get_svm_counts(self, size):
         print(type(self.qcomputer))
 
-        if self.computers_turn :
+        if self.computers_turn:
             return self.svm.get_data_view(self.board, size)
         return None
 
@@ -181,12 +187,16 @@ if __name__ == "__main__":
 
     m = MainHandler()
     app = NoughtsAndCrossesApp(m)
-
-    roli = RoliBlockHandler(m)
-
-    m.roli = roli
     m.gui = app
 
-    roli.run()
+    # if no Roli Block is attached, then use an on screen handler
+    try:
+        user_input = RoliBlockHandler(m)
+    except pygame.midi.MidiException:
+        user_input = OnScreenHandler(m)
+
+    m.user_input = user_input
+
+    user_input.run()
     app.mainloop()
 

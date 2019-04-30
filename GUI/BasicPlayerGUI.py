@@ -64,9 +64,9 @@ class BasicPlayerGUI(BasePlayerGUI):
 
         self.plays_imgs.append(img)
 
-    def draw_bloch(self, bloch_index, loc_index):
+    def draw_bloch(self, bloch_id, loc_index):
         path = '/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/testing/bloch'
-        self.bloch_imgs[loc_index] = self.load_bloch_image(path + str(bloch_index) + '.png')
+        self.bloch_imgs[loc_index] = self.load_bloch_image(path + str(bloch_id) + '.png')
 
         self.canvas.itemconfig(self.bloch_canvas_objs[loc_index], image=self.bloch_imgs[loc_index])
 

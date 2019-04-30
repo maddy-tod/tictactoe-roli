@@ -46,7 +46,7 @@ class SVMQPlayer:
         total_array = np.concatenate(temp)
 
         aqua_dict = {
-            'problem': {'name': 'svm_classification'},
+            'problem': {'name': 'classification'},
             'algorithm': {
                 'name': 'SVM'
             },

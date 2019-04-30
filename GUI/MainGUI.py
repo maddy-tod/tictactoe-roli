@@ -35,7 +35,7 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         # container contains the diff options
         # TODO make this dynamic
-        self.player_container = tk.Frame(self, width=1100, height=600, bg='green')
+        self.player_container = tk.Frame(self, width=1100, height=600)
         self.player_container.grid(row=1, column=1)
         self.player_container.grid_propagate(False)
 
@@ -90,6 +90,7 @@ class NoughtsAndCrossesApp(tk.Tk):
         self.qcomputer.take_turn()
 
     def reset(self):
+        print('?')
         self.current_frame.reset()
 
     def set_winner(self, winner):

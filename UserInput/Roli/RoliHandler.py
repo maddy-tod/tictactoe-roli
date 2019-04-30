@@ -17,16 +17,16 @@
 import logging
 import pygame
 from pygame.midi import time
-from pygame.locals import *
+from UserInput.UserInputHandler import UserInputHandler
 
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class RoliBlockHandler:
+class RoliBlockHandler(UserInputHandler):
 
     def __init__(self, controller):
-        self.controller = controller
+        super().__init__(controller)
         pygame.init()
         pygame.midi.init()
 
@@ -64,7 +64,7 @@ class RoliBlockHandler:
 
                 # 0xcc means the button has been pressed - start again
                 if data[0] == 0xcc:
-                    self.controller.reset()
+                    self.reset()
 
         self.controller.gui.after(100, self.run)
 
