@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.datasets.base import load_data
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.decomposition import PCA
-from qiskit_aqua.input import SVMInput
+from qiskit.aqua.input import ClassificationInput
 import numpy as np
 import random
 
@@ -35,12 +35,12 @@ class SVMQPlayer:
         self.data_file = 'data.csv'
         self.data_path = 'PlayerLogic'
 
-        feature_dim = 3  # dimension of each data point
+        self.feature_dim = 9  # dimension of each data point
         sample_Total, training_input, test_input, class_labels = SVMQPlayer.userDefinedData(self.data_path, self.data_file,
                                                                                  ['0', '1', '2', '3', '4', '5', '6',
                                                                                   '7', '8'],
                                                                                  training_size=6000, test_size=500,
-                                                                                 n=feature_dim, PLOT_DATA=False)
+                                                                                 n=self.feature_dim, PLOT_DATA=False)
 
         temp = [test_input[k] for k in test_input]
         total_array = np.concatenate(temp)
@@ -53,7 +53,7 @@ class SVMQPlayer:
             'multiclass_extension': {'name': 'AllPairs'}
         }
 
-        algo_input = SVMInput(training_input, test_input, total_array)
+        algo_input = ClassificationInput(training_input, test_input, total_array)
 
         from qiskit.aqua import QiskitAqua
         aqua_obj = QiskitAqua(aqua_dict, algo_input)
@@ -66,7 +66,7 @@ class SVMQPlayer:
     def take_turn(self, board):
         board = [x if x else 0 for x in board]
 
-        to_predict = SVMQPlayer.singleDataItem(self.data_path, self.data_file, board, n=3)
+        to_predict = SVMQPlayer.singleDataItem(self.data_path, self.data_file, board, n=self.feature_dim)
 
         self.move = self.algo_obj.predict(to_predict)[0]
 
@@ -74,7 +74,6 @@ class SVMQPlayer:
         if board[self.move]:
             spaces = [index for index, x in enumerate(board) if x == 0]
             self.move = random.choice(spaces)
-
 
     @staticmethod
     def userDefinedData(location, file, class_labels, training_size, test_size, n=2, PLOT_DATA=True):

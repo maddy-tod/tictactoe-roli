@@ -16,7 +16,6 @@
 # =============================================================================
 import logging
 import tkinter as tk
-from qiskit.tools.visualization import plot_bloch_vector
 from PIL import Image
 from PIL import ImageTk
 
@@ -44,15 +43,6 @@ class BasicPlayerGUI(BasePlayerGUI):
         img = Image.open(file)
         img = img.resize((self.space_size, self.space_size), Image.ANTIALIAS)
         return ImageTk.PhotoImage(img)
-
-    def gen_images(self):
-        locations = ['tl', 'tm', 'tr',
-                     'ml', 'mm', 'mr',
-                     'bl', 'bm', 'br']
-
-        for loc in locations:
-            x = plot_bloch_vector([0, 0, 1])
-            x.savefig('/Users/madeleinetod/Documents/NoughtsAndCrosses/GUI/imgs/starting/' + loc + '.png')
 
     def _draw_move(self, play, index):
         # need to store a ref to the image otherwise they get lost

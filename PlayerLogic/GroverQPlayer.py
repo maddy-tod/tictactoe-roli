@@ -15,10 +15,10 @@
 # limitations under the License.
 # =============================================================================
 import logging
-from qiskit_aqua import QuantumInstance
+from qiskit.aqua import QuantumInstance
 import random
-from qiskit_aqua.algorithms import Grover
-from qiskit_aqua.components.oracles import SAT
+from qiskit.aqua.algorithms import Grover
+from qiskit.aqua.components.oracles import LogicalExpressionOracle
 from qiskit import Aer
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -66,13 +66,33 @@ class GroverQPlayer:
 
         print(new_cnf)
 
-        sat_oracle = SAT(new_cnf)
+        sat_oracle = LogicalExpressionOracle(new_cnf)
         grover = Grover(sat_oracle)
 
         backend = Aer.get_backend('qasm_simulator')
         quantum_instance = QuantumInstance(backend, shots=100)
         result = grover.run(quantum_instance)
         print(result['result'])
+        print(result)
+
+        from qiskit.visualization import plot_histogram
+        plot_histogram(result['measurements'], filename='classic.png')
+
+        new_dict = {k: v for k, v in result['measurements'].items()if v > 1}
+
+        counts_per_space = [0]*9
+
+        for key, count in result['measurements'].items():
+            for index, space in enumerate(key):
+                # check this
+                if space == '0':
+                    counts_per_space[index] += count
+
+        new_dict = {i: count for i, count in enumerate(counts_per_space)}
+
+        print('--', result['measurements'])
+        print('---', new_dict)
+        plot_histogram(new_dict, filename='neww.png')
 
         # remove any moves which already have something in them, and filter to be the potential moves
         # which are indicated by being positive literals

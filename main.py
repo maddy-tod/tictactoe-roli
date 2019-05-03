@@ -198,5 +198,8 @@ if __name__ == "__main__":
     m.user_input = user_input
 
     user_input.run()
-    app.mainloop()
+    
+    # It quits sometimes and I don't know why
+    while app.running :
+        app.mainloop()
 

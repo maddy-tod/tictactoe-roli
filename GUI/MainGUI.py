@@ -26,6 +26,9 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         self.controller = controller
 
+        self.protocol("WM_DELETE_WINDOW", self._on_closing)
+        self.running = True
+
         tk.Canvas(self, width=150, height=70).grid(row=0, column=0)
         self.geometry("1500x800")
 
@@ -68,6 +71,10 @@ class NoughtsAndCrossesApp(tk.Tk):
                                command=lambda: self.show_frame("SVMPlayerGUI"),
                                height=2, width=20)
         svm_button.grid(row=0, column=2, padx=10)
+
+    def _on_closing(self):
+        self.running = False
+        self.destroy()
 
     def show_frame(self, page_name):
         """Show a frame for the given page name"""
@@ -135,8 +142,3 @@ class NoughtsAndCrossesApp(tk.Tk):
 
             for move, count in counts_dict.items():
                 self.current_frame.draw_potential_move(int(move), intensity=count / total_moves)
-
-
-if __name__ == "__main__":
-    app = NoughtsAndCrossesApp()
-    app.mainloop()
