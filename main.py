@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # =============================================================================
+
+import matplotlib
+matplotlib.use('Agg')
+
 import logging
 from GUI.MainGUI import NoughtsAndCrossesApp
 from UserInput import RoliBlockHandler, OnScreenHandler
