@@ -30,18 +30,17 @@ class RoliBlockHandler(UserInputHandler):
         pygame.init()
         pygame.midi.init()
 
+        logger.info("Looking for devices")
         for i in range(4):
-            print(i, " : ", pygame.midi.get_device_info(i))
+            logger.info(str(i) + " : " + str(pygame.midi.get_device_info(i)))
 
         input_id = 1
-        print("using input_id : %s" % input_id)
+        logger.info("using input_id : %s" % input_id)
         self.midi_input = pygame.midi.Input(input_id)
 
         # sending midi to the output
         output_id = 3
-        print("using output_id : %s" % output_id)
-
-        global midi_output
+        logger.info("using output_id : %s" % output_id)
         self.midi_output = pygame.midi.Output(output_id)
 
         # clear the display

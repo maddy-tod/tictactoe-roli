@@ -54,7 +54,7 @@ class MainHandler:
 
     def computer_take_turn(self):
         # check to see if the player has won
-        self.winner = self.logic.check_for_winner(self.board)
+        self.winner = GameLogic.check_for_winner(self.board)
         if self.winner != -1:
             self.draw_result()
 
@@ -90,7 +90,6 @@ class MainHandler:
             winner = 'No one'
 
         self.gui.set_winner(winner)
-
 
     def reset(self):
         self.board = [None] * 9
@@ -149,7 +148,6 @@ class MainHandler:
 
             q_blochs = self.qcomputer.num_t_gates
 
-            blochs = [(q_blochs[x], x) for x in range(0, 9)]
             blochs = [('H' + str(q_blochs[x]), x) if q_blochs[x] != -1 else (q_blochs[x], x) for x in range(0, 9)]
 
             return blochs
@@ -167,21 +165,17 @@ class MainHandler:
         # Has GUI at the end as its the name of the frame
         if computer_name == "BasicPlayerGUI":
             self.qcomputer = BasicQPlayer()
-            print('Using Basic')
+            logger.info('Using a Basic Player')
         elif computer_name == "GroverPlayerGUI":
             self.qcomputer = GroverQPlayer()
-            print('Using Grover')
+            logger.info('Using a Grover Player')
         elif computer_name == "SVMPlayerGUI":
-            print('Using SVM')
+            logger.info('Using a SVM Player')
 
             # svm is stored to prevent from having to retrain
             self.qcomputer = self.svm
 
-        #TODO reset the Roli too
-
     def get_svm_counts(self, size):
-        print(type(self.qcomputer))
-
         if self.computers_turn:
             return self.svm.get_data_view(self.board, size)
         return None

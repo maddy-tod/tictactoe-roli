@@ -21,10 +21,9 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 
 class GameLogic:
-    def __init__(self):
-        print()
 
-    def check_for_winner(self, board):
+    @staticmethod
+    def check_for_winner(board):
 
         # check rows
         for indx in [0, 3, 6]:

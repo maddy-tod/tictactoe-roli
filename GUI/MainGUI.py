@@ -97,7 +97,7 @@ class NoughtsAndCrossesApp(tk.Tk):
         self.qcomputer.take_turn()
 
     def reset(self):
-        print('?')
+        logger.info("Reset the GUI")
         self.current_frame.reset()
 
     def set_winner(self, winner):

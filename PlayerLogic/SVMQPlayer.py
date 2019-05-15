@@ -30,7 +30,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 class SVMQPlayer:
     def __init__(self):
-        print("made a q player!")
         self.move = 0
         self.data_file = 'data.csv'
         self.data_path = 'PlayerLogic'
@@ -59,15 +58,16 @@ class SVMQPlayer:
         aqua_obj = QiskitAqua(aqua_dict, algo_input)
         self.algo_obj = aqua_obj.quantum_algorithm
 
-        result = aqua_obj.run()
-        for k, v in result.items():
-            print("'{}' : {}".format(k, v))
+        logger.info("Training the SVM....")
+        aqua_obj.run()
+        logger.info("Trained!")
 
     def take_turn(self, board):
         board = [x if x else 0 for x in board]
 
         to_predict = SVMQPlayer.singleDataItem(self.data_path, self.data_file, board, n=self.feature_dim)
 
+        logger.info('Making prediction')
         self.move = self.algo_obj.predict(to_predict)[0]
 
         # if the move selected already contains a play, choose randomly
@@ -138,8 +138,6 @@ class SVMQPlayer:
         data = np.array(data)
         # add the to be tested data onto the end of the overall data
         sample_train = np.vstack((sample_train, data))
-
-        # TODO check that none of this is changing the order of the variables - if so will cause issues and this whole method won't work!
 
         # Now we standarize for gaussian around 0 with unit variance
         std_scale = StandardScaler().fit(sample_train)

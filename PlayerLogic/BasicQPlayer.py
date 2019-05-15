@@ -163,6 +163,7 @@ class BasicQPlayer:
                 self.num_t_gates[index] = -1
         qc.measure(q, c)
 
+        logger.info("Made the circuit, running it on the backend")
         backend = Aer.get_backend('qasm_simulator')
         shots = 100
         job_sim = execute(qc, backend, shots=shots)

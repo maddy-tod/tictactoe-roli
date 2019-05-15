@@ -28,7 +28,7 @@ class UserInputHandler:
         pass
 
     def reset(self, event=None):
-        print('resetting')
+        logger.info('resetting')
         self.controller.reset()
 
     def send_move(self, move):
