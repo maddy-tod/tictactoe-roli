@@ -18,14 +18,15 @@ If you have a Roli Block you would like to connect, you need to upload the [litt
 ## The Modes
 
 ### Basic
-This mode creates a new circuit everytime the computer needs to make a move. The circuit consists of 9 qubits, one for each space on the board. The general premise of circuit creation is to put all potential moves into an equal superposition, so in the |+> state, apply gates based on how "good" the move is to encourage it towards the |-> state and then reapply the `H` gate so the vector moves to be nearer to |0> or |1> depending on how good the move was considered to be. The more likely a qubit is to be measured as a 1, the better the move. The circuit is created as follows :
+This mode creates a new circuit everytime the computer needs to make a move. The circuit consists of 9 qubits, one for each space on the board. The general premise of circuit creation is to put all potential moves into an equal superposition, so in the |+> state, apply gates based on how "good" the move is to encourage it towards the |-> state and then reapply the `H` gate so the vector moves to be nearer to |0> or |1> depending on how good the move was considered to be. The more likely a qubit is to be measured as a 1, the better the move. 
 
+The circuit is created as follows :
 1. Any spaces that have a move already in them have an `X` gate applied to them. This means that they cannot possibly be used a move.
 2. Every avaiable space has an `H` gate applied to it to take it into the equal superposition.
 3. All the spaces that are avaliable are iterated over and have T gates applied to then according to some rules.
-  * Apply one `T` gate for every move in the same column as the space
-  * Apply one `T` gate for every move in the same row as the space
-  * Apply one `S` gate if the space is on a diagonal and there are 2 occupied spaces on the same diagonal
+    * Apply one `T` gate for every move in the same column as the space
+    * Apply one `T` gate for every move in the same row as the space
+    * Apply one `S` gate if the space is on a diagonal and there are 2 occupied spaces on the same diagonal
 4. Apply an `H` gate to all the avaliable spaces. 
 
 We then run this circuit 100 times and get the counts. These are then processed so that the counts of 1's in each position are obtained. The one that is the maximum is then selected as the move the quantum computer should make.
