@@ -38,7 +38,7 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         # container contains the diff options
         # TODO make this dynamic
-        self.player_container = tk.Frame(self, width=1100, height=600)
+        self.player_container = tk.Frame(self, width=1300, height=600)
         self.player_container.grid(row=1, column=1)
         self.player_container.grid_propagate(False)
 
@@ -125,6 +125,9 @@ class NoughtsAndCrossesApp(tk.Tk):
     def show_result(self):
         self.controller.show_result()
 
+    def show_matrices(self):
+        self.controller.show_matrices()
+
     def show_q_view(self):
         self._show_view(size=3)
 
@@ -142,3 +145,6 @@ class NoughtsAndCrossesApp(tk.Tk):
 
             for move, count in counts_dict.items():
                 self.current_frame.draw_potential_move(int(move), intensity=count / total_moves)
+
+    def get_counts(self):
+        return self.controller.get_counts()

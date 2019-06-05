@@ -33,7 +33,7 @@ class BasePlayerGUI(tk.Frame):
         label = tk.Label(self, text=labeltxt, font=title_font)
         label.pack(side="top", fill="x", pady=5)
 
-        self.canvas = tk.Canvas(self, width=1100, height=600)
+        self.canvas = tk.Canvas(self, width=1300, height=600)
 
         label_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
         self.state_label = self.canvas.create_text((1000, 190), text="Player's turn!", font=label_font)

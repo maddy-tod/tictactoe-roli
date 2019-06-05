@@ -93,11 +93,11 @@ class MainHandler:
 
     def reset(self):
         self.board = [None] * 9
-        self.qcomputer = BasicQPlayer()
 
         self.winner = -1
 
-        self.gui.reset()
+        if self.gui:
+            self.gui.reset()
 
     def get_next_blochs(self):
         """Get the next bloch spheres to be shown in the animation"""
@@ -175,10 +175,18 @@ class MainHandler:
             # svm is stored to prevent from having to retrain
             self.qcomputer = self.svm
 
+        self.reset()
+
     def get_svm_counts(self, size):
         if self.computers_turn:
             return self.svm.get_data_view(self.board, size)
         return None
+
+    def show_matrices(self):
+        self.gui.current_frame.update_matrix(self.qcomputer.vector)
+
+    def get_counts(self):
+        return self.qcomputer.counts
 
 
 if __name__ == "__main__":
