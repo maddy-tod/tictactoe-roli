@@ -44,7 +44,7 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         self.frames = {}
         self.current_frame = None
-        for F in (BasicPlayerGUI, GroverPlayerGUI, SVMPlayerGUI):
+        for F in (BasicPlayerGUI, GroverPlayerGUI, VQCPlayerGUI):
             page_name = F.__name__
             frame = F(parent=self.player_container, controller=self, width=1100, height=600)
             self.frames[page_name] = frame
@@ -67,8 +67,8 @@ class NoughtsAndCrossesApp(tk.Tk):
                                   command=lambda:self.show_frame("GroverPlayerGUI"),
                                   height=2, width=20)
         grover_button.grid(row=0, column=1, padx=10)
-        svm_button = tk.Button(button_container, text="SVM Player",
-                               command=lambda: self.show_frame("SVMPlayerGUI"),
+        svm_button = tk.Button(button_container, text="VQC Player",
+                               command=lambda: self.show_frame("VQCPlayerGUI"),
                                height=2, width=20)
         svm_button.grid(row=0, column=2, padx=10)
 

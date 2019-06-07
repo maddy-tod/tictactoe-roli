@@ -28,18 +28,18 @@ logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-class SVMQPlayer:
+class VQCQPlayer:
     def __init__(self):
         self.move = 0
         self.data_file = 'data.csv'
         self.data_path = 'PlayerLogic'
 
         self.feature_dim = 9  # dimension of each data point
-        sample_Total, training_input, test_input, class_labels = SVMQPlayer.userDefinedData(self.data_path, self.data_file,
-                                                                                 ['0', '1', '2', '3', '4', '5', '6',
+        sample_Total, training_input, test_input, class_labels = VQCQPlayer.userDefinedData(self.data_path, self.data_file,
+                                                                                            ['0', '1', '2', '3', '4', '5', '6',
                                                                                   '7', '8'],
-                                                                                 training_size=6000, test_size=500,
-                                                                                 n=self.feature_dim, PLOT_DATA=False)
+                                                                                            training_size=6000, test_size=500,
+                                                                                            n=self.feature_dim, PLOT_DATA=False)
 
         temp = [test_input[k] for k in test_input]
         total_array = np.concatenate(temp)
@@ -65,7 +65,7 @@ class SVMQPlayer:
     def take_turn(self, board):
         board = [x if x else 0 for x in board]
 
-        to_predict = SVMQPlayer.singleDataItem(self.data_path, self.data_file, board, n=self.feature_dim)
+        to_predict = VQCQPlayer.singleDataItem(self.data_path, self.data_file, board, n=self.feature_dim)
 
         logger.info('Making prediction')
         self.move = self.algo_obj.predict(to_predict)[0]

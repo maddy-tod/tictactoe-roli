@@ -23,7 +23,7 @@ from GUI.MainGUI import NoughtsAndCrossesApp
 from UserInput import RoliBlockHandler, OnScreenHandler
 from PlayerLogic.BasicQPlayer import BasicQPlayer
 from PlayerLogic.GroverQPlayer import GroverQPlayer
-from PlayerLogic.SVMQPlayer import SVMQPlayer
+from PlayerLogic.VQCQPlayer import VQCQPlayer
 from GameLogic.GameLogic import GameLogic
 import pygame.midi
 
@@ -42,7 +42,7 @@ class MainHandler:
         self.logic = GameLogic()
         self.computers_turn = False
         self.q_animating_frame = 0
-        self.svm = SVMQPlayer()
+        self.svm = VQCQPlayer()
 
     def draw_x(self, index):
         self.gui.draw_x(index)
@@ -98,6 +98,8 @@ class MainHandler:
 
         if self.gui:
             self.gui.reset()
+
+        self.computers_turn = False
 
     def get_next_blochs(self):
         """Get the next bloch spheres to be shown in the animation"""

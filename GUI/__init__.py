@@ -17,7 +17,7 @@
 import logging
 from .BasicPlayerGUI import BasicPlayerGUI
 from .GroverPlayerGUI import GroverPlayerGUI
-from .SVMPlayerGUI import SVMPlayerGUI
+from .VQCPlayerGUI import VQCPlayerGUI
 from .BasePlayerGUI import BasePlayerGUI
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

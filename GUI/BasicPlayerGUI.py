@@ -85,7 +85,8 @@ class BasicPlayerGUI(BasePlayerGUI):
             self.window.after(600, self._animate_states)
 
     def reset(self):
-        self.plays = []
+
+        super().reset()
 
         # reset the Bloch sphere pictures
         for bloch in self.bloch_canvas_objs:
@@ -93,8 +94,6 @@ class BasicPlayerGUI(BasePlayerGUI):
 
         for img in self.plays_imgs:
             self.canvas.delete(img)
-
-        self.canvas.itemconfigure(self.state_label, text="Player's turn!")
 
     def draw_canvas(self):
         # if we wanted to re draw the images

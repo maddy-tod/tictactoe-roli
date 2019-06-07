@@ -47,6 +47,3 @@ class OnScreenHandler(UserInputHandler):
             move = x_val + 3 * y_val
             self.controller.draw_x(int(move))
             self.controller.computer_take_turn()
-
-
-
