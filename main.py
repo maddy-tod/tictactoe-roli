@@ -103,46 +103,45 @@ class MainHandler:
 
     def get_next_blochs(self):
         """Get the next bloch spheres to be shown in the animation"""
-        if self.computers_turn:
+        if self.q_animating_frame < 0:
+            self.q_animating_frame = 0
+            return
 
-            q_blochs = self.qcomputer.num_t_gates
+        q_blochs = self.qcomputer.num_t_gates
 
-            if self.q_animating_frame == 0:
-                # reset all to pointing up
-                blochs = [('', x) for x in range(0, 9)]
-            elif self.q_animating_frame == 1:
-                # move the ones which aren't possible moves
-                blochs = [(-1, x) for x in range(0, 9) if q_blochs[x] == -1]
+        if self.q_animating_frame == 0:
+            # reset all to pointing up
+            blochs = [('', x) for x in range(0, 9)]
+        elif self.q_animating_frame == 1:
+            # move the ones which aren't possible moves
+            blochs = [(-1, x) for x in range(0, 9) if q_blochs[x] == -1]
 
-            elif self.q_animating_frame == 2:
-                # H everyone
-                # Bloch 0 at every index
-                blochs = [(0, x) for x in range(0, 9) if q_blochs[x] != -1]
+        elif self.q_animating_frame == 2:
+            # H everyone
+            # Bloch 0 at every index
+            blochs = [(0, x) for x in range(0, 9) if q_blochs[x] != -1]
+
+        else:
+            # first three frames are taken by setup
+            qubit = self.q_animating_frame - 3
+
+            while qubit < len(q_blochs) - 1 and q_blochs[qubit] <= 0:
+                qubit += 1
+
+            # at the end
+            if qubit > 8:
+
+                # show H across everything
+                blochs = [('H' + str(q_blochs[qubit]), qubit) for qubit in range(0, 9) if q_blochs[qubit] != -1]
+
+                # reset
+                self.q_animating_frame = -2
 
             else:
-                # first three frames are taken by setup
-                qubit = self.q_animating_frame - 3
+                blochs = [(q_blochs[qubit], qubit)]
 
-                while qubit < len(q_blochs) - 1 and q_blochs[qubit] <= 0:
-                    qubit += 1
-
-                # at the end
-                if qubit > 8:
-
-                    # show H across everything
-                    blochs = [('H' + str(q_blochs[qubit]), qubit) for qubit in range(0, 9) if q_blochs[qubit] != -1]
-
-                    self._show_computer_turn()
-
-                    # reset
-                    self.computers_turn = False
-                    self.q_animating_frame = 0
-
-                else:
-                    blochs = [(q_blochs[qubit], qubit)]
-
-            self.q_animating_frame += 1
-            return blochs
+        self.q_animating_frame += 1
+        return blochs
 
     def get_final_blochs(self):
         """Get the final Bloch sphere states"""
@@ -156,7 +155,7 @@ class MainHandler:
 
     def show_result(self):
         """Show the computers turn"""
-        if self.computers_turn:
+        if self.computers_turn :
             self._show_computer_turn()
             # reset
             self.computers_turn = False

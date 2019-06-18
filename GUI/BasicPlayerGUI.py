@@ -31,6 +31,7 @@ class BasicPlayerGUI(BasePlayerGUI):
         super().__init__(parent, controller, 'Terra Player', **args)
         self.window = parent
         self.draw_canvas()
+        self.showing_states = False
 
     def load_bloch_image(self, file):
         img = Image.open(file)

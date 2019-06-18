@@ -24,6 +24,8 @@ class NoughtsAndCrossesApp(tk.Tk):
     def __init__(self, controller, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
+        self.title('TicTacQ!')
+
         self.controller = controller
 
         self.protocol("WM_DELETE_WINDOW", self._on_closing)

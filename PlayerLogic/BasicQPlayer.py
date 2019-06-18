@@ -46,6 +46,7 @@ class BasicQPlayer:
 
         # make the option definitely a 1 if there is a move in the space already
         for index, move in enumerate(board):
+
             if move:
                 qc.x(q[index])
             else:
@@ -59,12 +60,12 @@ class BasicQPlayer:
                 if index % 3 == 0:
 
                     # two pieces in a row - need to block/win
-                    if board[index + 1] and board[index + 2] and board[index + 1] == board[index + 2] :
+                    if board[index + 1] and board[index + 2] and board[index + 1] == board[index + 2]:
                         qc.t(q[index])
                         qc.t(q[index])
                         t_count += 2
-                    # one of the spaces is empty so go there
-                    elif board[index + 1] != board[index + 2]:
+                    # only one of the spaces is occupied (^ is xor, but they both have to explicitly be bools)
+                    elif bool(board[index + 1]) ^ bool(board[index + 2]):
                         qc.t(q[index])
                         t_count += 1
 
@@ -72,11 +73,11 @@ class BasicQPlayer:
                 if index % 3 == 1:
 
                     # two pieces in a row - need to block/win
-                    if board[index + 1] and board[index - 1] and board[index + 1] == board[index - 1] :
+                    if board[index + 1] and board[index - 1] and board[index + 1] == board[index - 1]:
                         qc.t(q[index])
                         qc.t(q[index])
                         t_count += 2
-                    elif board[index + 1] != board[index - 1]:
+                    elif bool(board[index + 1]) ^ bool(board[index - 1]):
                         qc.t(q[index])
                         t_count += 1
 
@@ -87,17 +88,17 @@ class BasicQPlayer:
                         qc.t(q[index])
                         qc.t(q[index])
                         t_count += 2
-                    elif board[index - 1] != board[index - 2]:
+                    elif bool(board[index - 1]) ^ bool(board[index - 2]):
                         qc.t(q[index])
                         t_count += 1
 
                 # so is the top row
                 if index / 3 < 1:
-                    if board[index + 3] and board[index - 6] and board[index - 3] == board[index - 3]:
+                    if board[index + 3] and board[index + 6] and board[index + 3] == board[index + 6]:
                         qc.t(q[index])
                         qc.t(q[index])
                         t_count += 2
-                    elif board[index + 3] != board[index - 6]:
+                    elif bool(board[index + 3]) ^ bool(board[index + 6]):
                         qc.t(q[index])
                         t_count += 1
 
@@ -107,7 +108,7 @@ class BasicQPlayer:
                         qc.t(q[index])
                         qc.t(q[index])
                         t_count += 2
-                    elif board[index - 3] != board[index + 3]:
+                    elif bool(board[index - 3]) ^ bool(board[index + 3]):
                         qc.t(q[index])
                         t_count += 1
 
@@ -117,7 +118,7 @@ class BasicQPlayer:
                         qc.t(q[index])
                         qc.t(q[index])
                         t_count += 2
-                    elif board[index - 3] != board[index - 6]:
+                    elif bool(board[index - 3]) ^ bool(board[index - 6]):
                         qc.t(q[index])
                         t_count += 1
 
