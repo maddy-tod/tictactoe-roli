@@ -31,7 +31,6 @@ class NoughtsAndCrossesApp(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self._on_closing)
         self.running = True
 
-        tk.Canvas(self, width=150, height=70).grid(row=0, column=0)
         self.geometry("1500x800")
 
         # the container is where we'll stack a bunch of frames
@@ -40,7 +39,7 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         # container contains the diff options
         # TODO make this dynamic
-        self.player_container = tk.Frame(self, width=1300, height=600)
+        self.player_container = tk.Frame(self, width=1500, height=600)
         self.player_container.grid(row=1, column=1)
         self.player_container.grid_propagate(False)
 

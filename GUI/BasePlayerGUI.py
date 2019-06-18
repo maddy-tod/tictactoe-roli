@@ -31,15 +31,16 @@ class BasePlayerGUI(tk.Frame):
 
         title_font = tkfont.Font(family='Helvetica', size=30, weight="bold", slant="italic")
         label = tk.Label(self, text=labeltxt, font=title_font)
-        label.pack(side="top", fill="x", pady=5)
+        label.pack(side="top", pady=20)
+        print(labeltxt)
 
-        self.canvas = tk.Canvas(self, width=1300, height=600)
+        self.canvas = tk.Canvas(self, width=1500, height=600)
 
         label_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
-        self.state_label = self.canvas.create_text((1000, 190), text="Player's turn!", font=label_font)
+        self.state_label = self.canvas.create_text((1200, 190), text="Player's turn!", font=label_font)
         self.canvas.pack()
 
-        self.x_offset = 300
+        self.x_offset = 460
         self.space_size = 170
 
         # stored the noughts and crosses images that have been played
@@ -107,4 +108,6 @@ class BasePlayerGUI(tk.Frame):
     def reset(self):
         self.plays = []
 
-        self.canvas.itemconfigure(self.state_label, text="Player's turn!")
+        # have to remake the label for some reason
+        label_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
+        self.state_label = self.canvas.create_text((1200, 190), text="Player's turn!", font=label_font)

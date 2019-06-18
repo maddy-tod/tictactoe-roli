@@ -80,15 +80,15 @@ class VQCPlayerGUI(BasePlayerGUI):
         self.quantum_button = tk.Button(self.canvas, text="Show quantum view",
                                         command=lambda: self.controller.show_q_view(),
                                         height=2, width=20)
-        self.quantum_button.place(x=10, y=0)
+        self.quantum_button.place(x=110, y=50)
         self.classical_button = tk.Button(self.canvas, text="Show classical view",
                                           command=lambda: self.controller.show_c_view(),
                                           height=2, width=20)
-        self.classical_button.place(x=10, y=50)
+        self.classical_button.place(x=110, y=100)
         self.result_button = tk.Button(self.canvas, text="Result",
                                        command=lambda: self.controller.show_result(),
                                        height=2, width=20)
-        self.result_button.place(x=10, y=100)
+        self.result_button.place(x=110, y=150)
 
         self.draw_grid()
 
