@@ -102,19 +102,22 @@ class BasicPlayerGUI(BasePlayerGUI):
 
         # Add buttons for the different modes
         self.states_button = tk.Button(self.canvas, text="Show setup states",
+                                       font=self.button_font,
                                        command=lambda: self.show_states_pressed(),
                                        height=2, width=20)
-        self.states_button.place(x=110, y=50)
+        self.states_button.place(x=self.button_x, y=50)
         # We are not currently showing how the states change
         self.showing_states = False
         self.final_button = tk.Button(self.canvas, text="Show final states",
+                                      font=self.button_font,
                                       command=lambda: self.controller.get_final_blochs(),
                                       height=2, width=20)
-        self.final_button.place(x=110, y=100)
+        self.final_button.place(x=self.button_x, y=100)
         self.result_button = tk.Button(self.canvas, text="Result",
+                                       font=self.button_font,
                                        command=lambda: self.controller.show_result(),
                                        height=2, width=20)
-        self.result_button.place(x=110, y=150)
+        self.result_button.place(x=self.button_x, y=150)
 
         # Allows for a bit of padding
         temp_x_offset = self.x_offset + 10

@@ -17,6 +17,7 @@
 import logging
 from qiskit import Aer, execute, QuantumCircuit, QuantumRegister, ClassicalRegister
 import numpy as np
+import random
 logger = logging.getLogger()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -70,8 +71,14 @@ class GroverQPlayer:
                 winning_state = state
 
         print('The move is ', winning_state, ' which is the same as ', str(int(winning_state, 2)))
+
         self.move = int(winning_state, 2)
         self.counts = reversed_answer
+
+        # shouldn't happen? but just in case
+        if board[int(winning_state, 2)]:
+            spaces = [i for i, mv in enumerate(board) if mv is None]
+            self.move = random.choice(spaces)
 
     def _board_to_superposition(self, board):
         # have to strip off the last thing to fit into 3 qubits

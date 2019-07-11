@@ -16,6 +16,7 @@
 # =============================================================================
 import tkinter as tk
 from GUI import *
+from tkinter import font as tkfont
 
 
 class NoughtsAndCrossesApp(tk.Tk):
@@ -25,6 +26,7 @@ class NoughtsAndCrossesApp(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.title('TicTacQ!')
+        self.button_font = tkfont.Font(family='IBM Plex Sans', size=15)
 
         self.controller = controller
 
@@ -40,14 +42,14 @@ class NoughtsAndCrossesApp(tk.Tk):
         # container contains the diff options
         # TODO make this dynamic
         self.player_container = tk.Frame(self, width=1500, height=600)
-        self.player_container.grid(row=1, column=1)
+        self.player_container.grid(row=1, column=0)
         self.player_container.grid_propagate(False)
 
         self.frames = {}
         self.current_frame = None
         for F in (BasicPlayerGUI, GroverPlayerGUI, VQCPlayerGUI):
             page_name = F.__name__
-            frame = F(parent=self.player_container, controller=self, width=1100, height=600)
+            frame = F(parent=self.player_container, controller=self, width=1500, height=600)
             self.frames[page_name] = frame
 
             # put all of the pages in the same location;
@@ -59,19 +61,22 @@ class NoughtsAndCrossesApp(tk.Tk):
 
         # Create the buttons for swapping between
         button_container = tk.Frame(self)
-        button_container.grid(row=2, column=1, pady=10)
+        button_container.grid(row=2, column=0, pady=50)
         basic_button = tk.Button(button_container, text="Basic Player",
+                                 font=self.button_font,
                                  command=lambda: self.show_frame("BasicPlayerGUI"),
-                                 height=2, width=20)
-        basic_button.grid(row=0, column=0, padx=10)
+                                 height=2, width=12)
+        basic_button.grid(row=0, column=0, ipadx=31, sticky='W')
         grover_button = tk.Button(button_container, text="Grover Player",
-                                  command=lambda:self.show_frame("GroverPlayerGUI"),
-                                  height=2, width=20)
-        grover_button.grid(row=0, column=1, padx=10)
+                                  font=self.button_font,
+                                  command=lambda: self.show_frame("GroverPlayerGUI"),
+                                  height=2, width=12)
+        grover_button.grid(row=0, column=1, padx=60, ipadx=31)
         svm_button = tk.Button(button_container, text="VQC Player",
+                               font=self.button_font,
                                command=lambda: self.show_frame("VQCPlayerGUI"),
-                               height=2, width=20)
-        svm_button.grid(row=0, column=2, padx=10)
+                               height=2, width=12)
+        svm_button.grid(row=0, column=2, ipadx=31)
 
     def _on_closing(self):
         self.running = False

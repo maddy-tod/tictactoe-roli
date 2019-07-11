@@ -25,19 +25,22 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 
 
 class BasePlayerGUI(tk.Frame):
+
     def __init__(self, parent, controller, labeltxt, **args):
         tk.Frame.__init__(self, parent, **args)
         self.controller = controller
 
-        title_font = tkfont.Font(family='Helvetica', size=30, weight="bold", slant="italic")
-        label = tk.Label(self, text=labeltxt, font=title_font)
-        label.pack(side="top", pady=20)
-        print(labeltxt)
+        self.title_font = tkfont.Font(family='IBM Plex Sans', size=40, weight="bold")
+        self.label_font = tkfont.Font(family='IBM Plex Sans', size=22, weight="bold")
+        self.button_font = tkfont.Font(family='IBM Plex Sans', size=15)
+
+        label = tk.Label(self, text=labeltxt, font=self.title_font)
+        label.pack(side="top", pady=20, anchor='w', padx=620-(len(labeltxt)))
 
         self.canvas = tk.Canvas(self, width=1500, height=600)
+        self.cleaned = False
 
-        label_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
-        self.state_label = self.canvas.create_text((1200, 190), text="Player's turn!", font=label_font)
+        self.state_label = self.canvas.create_text((240, 20), text="Player's turn!", font=self.label_font)
         self.canvas.pack()
 
         self.x_offset = 460
@@ -48,6 +51,8 @@ class BasePlayerGUI(tk.Frame):
         self.plays_imgs = []
         self.nought = self.load_other_image('GUI/imgs/players/o.png')
         self.cross = self.load_other_image('GUI/imgs/players/x.png')
+
+        self.button_x = 130
 
     def load_other_image(self, file):
         img = Image.open(file)
@@ -92,6 +97,7 @@ class BasePlayerGUI(tk.Frame):
         self.canvas.pack_forget()
         self.canvas.delete("all")
         self.canvas.pack()
+        self.cleaned = True
 
     def show_winner(self, winner):
         self.canvas.itemconfigure(self.state_label, text=winner + " won!")
@@ -102,12 +108,12 @@ class BasePlayerGUI(tk.Frame):
     def moving_to(self):
         self.draw_canvas()
 
+        if self.cleaned:
+            self.state_label = self.canvas.create_text((240, 20), text="Player's turn!", font=self.label_font)
+            self.cleaned = False
+
     def draw_canvas(self):
         pass
 
     def reset(self):
         self.plays = []
-
-        # have to remake the label for some reason
-        label_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
-        self.state_label = self.canvas.create_text((1200, 190), text="Player's turn!", font=label_font)
