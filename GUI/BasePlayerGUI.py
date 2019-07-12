@@ -94,10 +94,10 @@ class BasePlayerGUI(tk.Frame):
         self.canvas.pack()
 
     def moving_off(self):
+        self.cleaned = True
         self.canvas.pack_forget()
         self.canvas.delete("all")
         self.canvas.pack()
-        self.cleaned = True
 
     def show_winner(self, winner):
         self.canvas.itemconfigure(self.state_label, text=winner + " won!")

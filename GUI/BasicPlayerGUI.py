@@ -154,6 +154,7 @@ class BasicPlayerGUI(BasePlayerGUI):
 
     def moving_off(self):
 
+        super().moving_off()
         self.states_button.place_forget()
         self.states_button.destroy()
         self.final_button.place_forget()

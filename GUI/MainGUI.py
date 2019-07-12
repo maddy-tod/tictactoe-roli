@@ -57,26 +57,36 @@ class NoughtsAndCrossesApp(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("BasicPlayerGUI")
-
         # Create the buttons for swapping between
+        self.name_to_button = {}
         button_container = tk.Frame(self)
         button_container.grid(row=2, column=0, pady=50)
         basic_button = tk.Button(button_container, text="Basic Player",
                                  font=self.button_font,
                                  command=lambda: self.show_frame("BasicPlayerGUI"),
-                                 height=2, width=12)
+                                 height=2, width=12,
+                                 borderwidth=100,
+                                 highlightbackground='yellow')
         basic_button.grid(row=0, column=0, ipadx=31, sticky='W')
+        self.name_to_button['BasicPlayerGUI'] = basic_button
         grover_button = tk.Button(button_container, text="Grover Player",
                                   font=self.button_font,
                                   command=lambda: self.show_frame("GroverPlayerGUI"),
-                                  height=2, width=12)
+                                  height=2, width=12,
+                                  borderwidth=100,
+                                  highlightbackground='grey')
         grover_button.grid(row=0, column=1, padx=60, ipadx=31)
+        self.name_to_button['GroverPlayerGUI'] = grover_button
         svm_button = tk.Button(button_container, text="VQC Player",
                                font=self.button_font,
                                command=lambda: self.show_frame("VQCPlayerGUI"),
-                               height=2, width=12)
+                               height=2, width=12,
+                               borderwidth=100,
+                               highlightbackground='light grey')
         svm_button.grid(row=0, column=2, ipadx=31)
+        self.name_to_button['VQCPlayerGUI'] = svm_button
+
+        self.show_frame("BasicPlayerGUI")
 
     def _on_closing(self):
         self.running = False
@@ -85,8 +95,17 @@ class NoughtsAndCrossesApp(tk.Tk):
     def show_frame(self, page_name):
         """Show a frame for the given page name"""
 
+        # deal with toggling the buttons
+        pressed_button = self.name_to_button[page_name]
+        for button in self.name_to_button.values():
+            if button == pressed_button:
+                button.config(highlightbackground='light blue')
+            else:
+                button.config(highlightbackground='grey')
+
         frame = self.frames[page_name]
         frame.tkraise()
+
         if self.current_frame:
             self.current_frame.moving_off()
         self.current_frame = frame
