@@ -77,7 +77,7 @@ class NoughtsAndCrossesApp(tk.Tk):
                                   highlightbackground='grey')
         grover_button.grid(row=0, column=1, padx=60, ipadx=31)
         self.name_to_button['GroverPlayerGUI'] = grover_button
-        svm_button = tk.Button(button_container, text="VQC Player",
+        svm_button = tk.Button(button_container, text="SVM Player",
                                font=self.button_font,
                                command=lambda: self.show_frame("VQCPlayerGUI"),
                                height=2, width=12,

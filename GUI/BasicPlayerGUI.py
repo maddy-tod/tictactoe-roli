@@ -118,6 +118,7 @@ class BasicPlayerGUI(BasePlayerGUI):
                                        command=lambda: self.controller.show_result(),
                                        height=2, width=20)
         self.result_button.place(x=self.button_x, y=150)
+        self.buttons = [self.states_button, self.final_button, self.result_button]
 
         # Allows for a bit of padding
         temp_x_offset = self.x_offset + 10

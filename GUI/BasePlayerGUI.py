@@ -54,6 +54,8 @@ class BasePlayerGUI(tk.Frame):
 
         self.button_x = 130
 
+        self.buttons = []
+
     def load_other_image(self, file):
         img = Image.open(file)
         img = img.resize((self.space_size, self.space_size), Image.ANTIALIAS)
@@ -63,9 +65,17 @@ class BasePlayerGUI(tk.Frame):
         self._draw_move(self.cross, index)
         self.canvas.itemconfigure(self.state_label, text="Computer's turn")
 
+        for button in self.buttons:
+            print('bye felica')
+            button.forget()
+            button.visible = False
+
+
     def draw_o(self, index):
         self._draw_move(self.nought, index)
         self.canvas.itemconfigure(self.state_label, text="Player's turn!")
+
+
 
     def _draw_move(self, play, index):
         # need to store a ref to the image otherwise they get lost

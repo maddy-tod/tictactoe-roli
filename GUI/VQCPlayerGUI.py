@@ -26,7 +26,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 class VQCPlayerGUI(BasePlayerGUI):
 
     def __init__(self, parent, controller, **args):
-        super().__init__(parent, controller, 'VQC Player', **args)
+        super().__init__(parent, controller, 'SVM Player', **args)
 
         self.potenial_moves_canvas_imgs = []
         self.potenial_moves_actual_imgs = []
