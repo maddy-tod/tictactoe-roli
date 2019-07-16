@@ -100,6 +100,21 @@ class BasicPlayerGUI(BasePlayerGUI):
         # if we wanted to re draw the images
         # self.gen_images()
 
+        rules = """
+        Rules :
+        
+            1  T-gate if there is anything in the 
+                       row/column
+            
+            2  T-gates if there are 2 moves that 
+                       are the same in in the row/col
+                      
+            3  T-gates if it is on a diagonal and 
+                       the other 2 spaces are the same
+        """
+
+        self.rules = self.canvas.create_text((20, 175), text=rules, font=self.label_font, anchor='nw')
+
         # Add buttons for the different modes
         self.states_button = tk.Button(self.canvas, text="Show setup states",
                                        font=self.button_font,
